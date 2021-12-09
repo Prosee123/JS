@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+
+    <title>merchant</title>
+    <script src="string.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <section id="Head">
+            <div class="container-fluid">
+                <div class="addnode">
+                    <div style="display: flex;align-items: center;">
+                        <label for="usr">Menu Management</label>
+
+                        <!-- <button id="addparent"></button> -->
+
+                    </div>
+                    <div style="display: flex;flex-flow: column;align-items: center;">
+                        <img src="image/Asset 2.svg" style="    height: 30px;
+                        width: 30px;" alt="">
+                        <p class="logoname">Ndhgo</p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="nodes">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="nodediv">
+                            <!-- <p id="hidden" style="text-align: center;">Add Lists</p> -->
+                            <div class="listhead">
+                                <!-- <button id="hidden">Add Lists </button> -->
+                                <h5>Add New Menu</h5>
+                                <!-- onclick="myFunction()" -->
+                                <button id="hidden"><span class="ri-arrow-right-circle-fill "></span></button>
+
+
+                            </div>
+                            <div id="myDIV">
+                                <div class="ipvaluebox">
+                                    <input type="text" class="form-control" id="usr">
+                                    <button class="btn " id="mainAddBtn" onclick="addNode()"><i
+                                            class="ri-add-circle-fill"></i></button>
+                                </div>
+                            </div>
+                            <ul id="list" class="nav nav-tabs"></ul>
+
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div id="sublist">
+                            <p class="sublist">Sub-List</p>
+                        </div>
+                        <div id="childs" class="childss tab-content"></div>
+
+                    </div>
+                </div>
+
+
+            </div>
+           
+        </section>
+    </div>
+    <!-- <div id = "div1" style="display:block" onclick = "replace('div1','div2')">.bjhb..</div>
+<div id = "div2" style="display:none" onclick = "replace('div2','div3')">.bb.</div>
+<div id = "div3" style="display:none" onclick = "replace('div3','div4')">.bjkb.</div>
+... -->
+<script src="index.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // $.i=0;
+            $("#list" + i).click(function () {
+                $("#subdiv" + i).toggle();
+            });
+        });
+        jQuery(function ($) {
+            $('#hidden').on('click', function () {
+                var $el = $(this),
+                    textNode = this.lastChild;
+                $el.find('span').toggleClass('ri-arrow-right-circle-fill  ri-arrow-down-circle-fill');
+            });
+        });
+        $(document).ready(function () {
+            $("#myDIV").hide();
+        });
+        $('#hidden').on('click', function (e) {
+            $("#myDIV").toggle();
+            $(this).toggleClass('class1')
+        });
+        // $(document).ready(function () {
+        //     $('.btn').on('click', function () {
+        //         $(this).prop("disabled", true);
+        //         $(this).siblings('.loading').show();
+        //     });
+        // });
+//         $('.nav-tabs a').click(function(){
+//             $('.nav-tabs a[href="#subdiv"]').tab('show')
+//             console.log('hi');
+// })
+
+    </script>
+</body>
+
+</html>
+<!-- ri-arrow-down-circle-fill -->

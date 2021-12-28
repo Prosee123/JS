@@ -1,12 +1,12 @@
-var listArray = [];
-var list_of_buttons = [];
-var i = 0;
-var j = 0;
-var k = 0;
-var rankDataChild = 1;
-var rankDataParent = 1;
-var firstApiResponse = null;
-var api = 'http://10.1.6.87:9000/api/';
+let listArray = [];
+let list_of_buttons = [];
+let i = 0;
+let j = 0;
+let k = 0;
+let rankDataChild = 1;
+let rankDataParent = 1;
+let firstApiResponse = null;
+const api = 'http://10.1.6.87:9000/api/';
 // var delApi = 'http://localhost:8080/api/store/'
 
 
@@ -210,6 +210,7 @@ async function initialValue() {
                                     for (let s = 0; s < childlen; s++) {
                                         // let childValue = firstApiResponse.data[0].payLoad[x];
                                         let childValue = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.subMenuName
+                                        let childURL = `${firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.link}`
 
                                         // let subInputValue = subInput.value;
                                         let b = document.createElement('div')
@@ -229,6 +230,13 @@ async function initialValue() {
                                         inputTextDiv.appendChild(paraAndEditDiv);
                                         paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                                        let editbtnSub = document.createElement('button')
+                                        paraAndEditDiv.appendChild(editbtnSub)
+                                        editbtnSub.setAttribute('id', 'editsub' + k)
+                                        editbtnSub.setAttribute('class', 'editsub')
+                                        editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                                         let inputParaDiv = document.createElement('p');
                                         paraAndEditDiv.appendChild(inputParaDiv);
                                         inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
@@ -240,6 +248,24 @@ async function initialValue() {
 
                                         // childValue
 
+                                        let urlDiv = document.createElement('div')
+                                        inputTextDiv.appendChild(urlDiv)
+                                        urlDiv.setAttribute('class', 'URL')
+
+                                        let editUrlBtn = document.createElement('button')
+                                        urlDiv.appendChild(editUrlBtn)
+                                        editUrlBtn.setAttribute('id', 'editUrl' + k)
+                                        editUrlBtn.setAttribute('class', 'editUrl')
+                                        editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
+
+                                        let urlPara = document.createElement('p')
+                                        urlDiv.appendChild(urlPara)
+                                        urlPara.setAttribute('id', 'URLpara' + k)
+                                        urlPara.setAttribute('class', 'URLpara')
+                                        urlPara.innerText = childURL
+
+                                        // urlDiv.innerHTML=editUrlBtn+childURL
+
                                         let div3 = document.createElement('div')
                                         div3.setAttribute('class', 'childEditDel')
 
@@ -247,11 +273,8 @@ async function initialValue() {
                                         subInputdel.setAttribute('id', 'ipDelBtn' + k)
                                         subInputdel.setAttribute('class', 'ipDelBtn')
 
-                                        let editbtnSub = document.createElement('button')
-                                        editbtnSub.setAttribute('id', 'editsub' + k)
-                                        editbtnSub.setAttribute('class', 'editsub')
-                                        editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
-                                        div3.appendChild(editbtnSub);
+
+                                        // div3.appendChild(editbtnSub);
 
                                         div3.appendChild(subInputdel);
                                         inputTextDiv.appendChild(div3);
@@ -270,12 +293,15 @@ async function initialValue() {
 
                                         };
                                         let subparagraph = document.getElementById('inputParaDiv' + k)
+                                        let subparagraphURL = document.getElementById('URLpara' + k)
 
-                                        function editSubChild() {
+                                        async function editSubChild() {
                                             // let childid=editbtnSub.id;
                                             let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
 
                                             let childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id;
+                                            let childEditURL = `${firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.link}`;
+
                                             console.log(childEditId);
 
 
@@ -287,36 +313,180 @@ async function initialValue() {
                                             subparagraph.style.outline = "none";
                                             subparagraph.style.borderRadius = "10px";
                                             subparagraph.style.padding = "1px 10px";
-                                            subparagraph.innerHTML = ""
+                                            subparagraph.innerHTML = subparagraph.innerText
 
-                                            // let editDoneBtn2 = document.createElement('button')
-                                            // paraAndEditDiv.appendChild(editDoneBtn2);
-                                            // editDoneBtn2.innerHTML = '<i class="ri-arrow-right-fill"></i>';
-                                            // editDoneBtn2.setAttribute('type', 'submit');
-                                            // editDoneBtn2.setAttribute('id', 'end-editing')
+                                            let editDoneBtn = document.createElement('button')
+                                            paraAndEditDiv.appendChild(editDoneBtn);
+                                            editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                            editDoneBtn.setAttribute('type', 'submit');
+                                            editDoneBtn.setAttribute('id', 'end-editing')
 
-                                            subparagraph.onkeydown = function (event) {
+
+                                            editDoneBtn.addEventListener("click", async function () {
+                                                subparagraph.contentEditable = false;
+                                                subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                                                subparagraph.style.backgroundColor = "#ebebeb";
+                                                setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                                                subparagraph.style.borderRadius = "20px";
+                                                subparagraph.style.padding = "0px";
+
+                                                editDoneBtn.style.display = 'none';
+                                                editbtnSub.disabled = false;
+
+
+
+                                                // console.log(paragraph.innerHTML);
+
+                                                let childUpdate = await axios({
+                                                    method: 'put',
+                                                    url: `${api}store/child/${childEditId}`,
+                                                    data: {
+
+                                                        "permissionId": childEditId,
+                                                        "permissionName": childEditURL,
+                                                        "permissionDescription": subparagraph.innerText,
+                                                        "permissionGroup": nodeName.innerText,
+                                                        "permissionControl": "MENU",
+                                                        "icon": "sub-icon",
+                                                        "permissionLevel": "Special Coupon",
+                                                        "rankData": childRantData
+                                                    }
+                                                });
+                                                // console.log(parentUpdate.data);
+
+                                            })
+
+
+                                            subparagraph.onkeydown = async function (event) {
                                                 if (event.key === "Enter") {
                                                     subparagraph.contentEditable = false;
+                                                    editDoneBtn.style.display = 'none'
+
                                                     subparagraph.style.backgroundColor = "#9efefe";
                                                     setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
 
                                                     subparagraph.style.borderRadius = "20px";
                                                     subparagraph.style.padding = "0px";
+                                                    subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
 
                                                     // editDoneBtn2.style.display = 'none';
                                                     editbtnSub.disabled = false;
                                                     if (subparagraph.innerHTML === "") {
                                                         alert('Input Content is Empty')
                                                     }
-                                                    let childUpdate = axios({
+                                                    let childUpdate = await axios({
                                                         method: 'put',
                                                         url: `${api}store/child/${childEditId}`,
                                                         data: {
 
                                                             "permissionId": childEditId,
-                                                            "permissionName": "/coupon/special-coupon",
-                                                            "permissionDescription": subparagraph.innerHTML,
+                                                            "permissionName": childURL,
+                                                            "permissionDescription": subparagraph.innerText,
+                                                            "permissionGroup": nodeName.innerText,
+                                                            "permissionControl": "MENU",
+                                                            "icon": "sub-icon",
+                                                            "permissionLevel": "Special Coupon",
+                                                            "rankData": childRantData
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+
+
+                                        }
+                                        async function editSubChildURL() {
+                                            console.log(subparagraphURL);
+                                            // let childid=editbtnSub.id;
+                                            let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
+
+                                            let childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id;
+                                            console.log(childEditId);
+
+
+                                            editbtnSub.disabled = true;
+
+                                            subparagraphURL.contentEditable = true;
+                                            subparagraphURL.style.backgroundColor = "#ebebeb";
+                                            subparagraphURL.style.color = "black";
+                                            subparagraphURL.style.outline = "none";
+                                            subparagraphURL.style.borderRadius = "10px";
+                                            subparagraphURL.style.padding = "1px 10px";
+                                            subparagraphURL.innerHTML = subparagraphURL.innerText
+
+                                            let editDoneBtn = document.createElement('button')
+                                            urlDiv.appendChild(editDoneBtn);
+                                            editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                            editDoneBtn.setAttribute('type', 'submit');
+                                            editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                                            editDoneBtn.addEventListener("click", async function () {
+                                                subparagraphURL.contentEditable = false;
+                                                subparagraphURL.innerHTML = subparagraphURL.innerText;
+                                                subparagraphURL.style.backgroundColor = "#ebebeb";
+                                                setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                                subparagraphURL.style.borderRadius = "20px";
+                                                subparagraphURL.style.padding = "0px";
+
+                                                editDoneBtn.style.display = 'none';
+                                                editbtnSub.disabled = false;
+
+
+
+                                                // console.log(paragraph.innerHTML);
+
+                                                let childUpdate = await axios({
+                                                    method: 'put',
+                                                    url: `${api}store/child/${childEditId}`,
+                                                    data: {
+
+                                                        "permissionId": childEditId,
+                                                        "permissionName": subparagraphURL.innerText,
+                                                        "permissionDescription": inputParaDiv.innerText,
+                                                        "permissionGroup": nodeName.innerText,
+                                                        "permissionControl": "MENU",
+                                                        "icon": "sub-icon",
+                                                        "permissionLevel": "Special Coupon",
+                                                        "rankData": childRantData
+                                                    }
+                                                });
+                                                // console.log(parentUpdate.data);
+
+                                            })
+
+
+                                            subparagraphURL.onkeydown = async function (event) {
+                                                if (event.key === "Enter") {
+                                                    subparagraphURL.contentEditable = false;
+                                                    editDoneBtn.style.display = 'none'
+
+                                                    subparagraphURL.style.backgroundColor = "#9efefe";
+                                                    setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                                    subparagraphURL.style.borderRadius = "20px";
+                                                    subparagraphURL.style.padding = "0px";
+                                                    subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
+
+                                                    // editDoneBtn2.style.display = 'none';
+                                                    editbtnSub.disabled = false;
+                                                    if (subparagraphURL.innerHTML === "") {
+                                                        alert('Input Content is Empty')
+                                                    }
+                                                    let childUpdate = await axios({
+                                                        method: 'put',
+                                                        url: `${api}store/child/${childEditId}`,
+                                                        data: {
+
+                                                            "permissionId": childEditId,
+                                                            "permissionName": subparagraphURL.innerText,
+                                                            "permissionDescription": inputParaDiv.innerText,
                                                             "permissionGroup": nodeName.innerText,
                                                             "permissionControl": "MENU",
                                                             "icon": "sub-icon",
@@ -331,6 +501,8 @@ async function initialValue() {
 
                                         }
                                         document.getElementById('editsub' + k).onclick = editSubChild;
+                                        document.getElementById('editUrl' + k).onclick = editSubChildURL;
+
 
                                         subInputdel.onclick = removeSub;
 
@@ -430,7 +602,7 @@ async function initialValue() {
                                 function handleDragStart(e) {
                                     this.style.opacity = "0.4";
 
-                                    dragSrcEl = this; 
+                                    dragSrcEl = this;
 
                                     e.dataTransfer.effectAllowed = "move";
                                     //e.dataTransfer.setData("text/html", this.innerHTML);
@@ -544,6 +716,13 @@ async function initialValue() {
                                 inputTextDiv.appendChild(paraAndEditDiv);
                                 paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                                let editbtnSub = document.createElement('button')
+                                paraAndEditDiv.appendChild(editbtnSub)
+                                editbtnSub.setAttribute('id', 'editsub' + k)
+                                editbtnSub.setAttribute('class', 'editsub')
+                                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                                 let inputParaDiv = document.createElement('p');
                                 paraAndEditDiv.appendChild(inputParaDiv);
                                 inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
@@ -552,20 +731,30 @@ async function initialValue() {
                                 // inputTextDiv.appendChild(inputParaDiv);
                                 inputParaDiv.innerHTML = "<i class='ri-check-double-line'></i>" + subInputValue;
 
+                                let urlDiv = document.createElement('div')
+                                inputTextDiv.appendChild(urlDiv)
+                                urlDiv.setAttribute('class', 'URL')
 
+                                let editUrlBtn = document.createElement('button')
+                                urlDiv.appendChild(editUrlBtn)
+                                editUrlBtn.setAttribute('id', 'editUrl' + k)
+                                editUrlBtn.setAttribute('class', 'editUrl')
+                                editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
 
+                                let urlPara = document.createElement('p')
+                                urlDiv.appendChild(urlPara)
+                                urlPara.setAttribute('id', 'URLpara' + k)
+                                urlPara.setAttribute('class', 'URLpara')
+                                urlPara.innerText = 'Edit Url here'
 
                                 let div3 = document.createElement('div')
+                                div3.setAttribute('class', 'childEditDel')
 
                                 let subInputdel = document.createElement('button')
                                 subInputdel.setAttribute('id', 'ipDelBtn' + k)
                                 subInputdel.setAttribute('class', 'ipDelBtn')
 
-                                let editbtnSub = document.createElement('button')
-                                editbtnSub.setAttribute('id', 'editsub' + k)
-                                editbtnSub.setAttribute('class', 'editsub')
-                                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
-                                div3.appendChild(editbtnSub);
+
 
                                 div3.appendChild(subInputdel);
                                 inputTextDiv.appendChild(div3);
@@ -573,18 +762,20 @@ async function initialValue() {
 
                                 // sub.appendChild(inputTextDiv);
                                 let subparagraph = document.getElementById('inputParaDiv' + k)
+                                let subparagraphURL = document.getElementById('URLpara' + k)
+
 
                                 await axios({
                                     method: 'post',
                                     url: `${api}store/child`,
                                     data: {
 
-                                        "permissionName": "/coupon/special-coupon",
+                                        "permissionName": urlPara.innerText,
                                         "permissionDescription": subInputValue,
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
-                                        "permissionLevel": "Special Coupon",
+                                        "permissionLevel": subInputValue,
                                         "rankData": rankDataChild++
                                     }
                                 });
@@ -622,12 +813,15 @@ async function initialValue() {
                                     // console.log(childEditLen)
                                     let childEditId = 0;
                                     let childRantData = 0;
+                                    let childEditURL = '';
                                     for (let s = 0; s < childEditLen; s++) {
                                         let childEditName = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.subMenuName
 
                                         if (childEditName == ChildName) {
                                             childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
                                             childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id
+                                            childEditURL = `${firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.link}`;
+
 
                                         }
                                     }
@@ -641,16 +835,64 @@ async function initialValue() {
                                     subparagraph.style.outline = "none";
                                     subparagraph.style.borderRadius = "10px";
                                     subparagraph.style.padding = "1px 10px";
-                                    subparagraph.innerHTML = ""
+                                    subparagraph.innerHTML = subparagraph.innerText
+
+                                    let editDoneBtn = document.createElement('button')
+                                    paraAndEditDiv.appendChild(editDoneBtn);
+                                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                    editDoneBtn.setAttribute('type', 'submit');
+                                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                                    editDoneBtn.addEventListener("click", async function () {
+                                        subparagraph.contentEditable = false;
+                                        subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                                        subparagraph.style.backgroundColor = "#ebebeb";
+                                        setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                                        subparagraph.style.borderRadius = "20px";
+                                        subparagraph.style.padding = "0px";
+
+                                        editDoneBtn.style.display = 'none';
+                                        editbtnSub.disabled = false;
+
+
+
+                                        // console.log(paragraph.innerHTML);
+
+                                        let childUpdate = await axios({
+                                            method: 'put',
+                                            url: `${api}store/child/${childEditId}`,
+                                            data: {
+
+                                                "permissionId": childEditId,
+                                                "permissionName": childEditURL,
+                                                "permissionDescription": subparagraph.innerText,
+                                                "permissionGroup": nodeName.innerText,
+                                                "permissionControl": "MENU",
+                                                "icon": "sub-icon",
+                                                "permissionLevel": "Special Coupon",
+                                                "rankData": childRantData
+                                            }
+                                        });
+                                        // console.log(parentUpdate.data);
+
+                                    })
+
 
                                     subparagraph.onkeydown = async function (event) {
                                         if (event.key === "Enter") {
                                             subparagraph.contentEditable = false;
+                                            editDoneBtn.style.display = 'none'
+
                                             subparagraph.style.backgroundColor = "#9efefe";
                                             setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
 
                                             subparagraph.style.borderRadius = "20px";
                                             subparagraph.style.padding = "0px";
+                                            subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
 
                                             // editDoneBtn2.style.display = 'none';
                                             editbtnSub.disabled = false;
@@ -663,8 +905,8 @@ async function initialValue() {
                                                 data: {
 
                                                     "permissionId": childEditId,
-                                                    "permissionName": "/coupon/special-coupon",
-                                                    "permissionDescription": subparagraph.innerHTML,
+                                                    "permissionName": childEditURL,
+                                                    "permissionDescription": subparagraph.innerText,
                                                     "permissionGroup": nodeName.innerText,
                                                     "permissionControl": "MENU",
                                                     "icon": "sub-icon",
@@ -676,12 +918,125 @@ async function initialValue() {
                                         }
                                     }
 
+                                }
+                                async function editSubChildURL() {
+
+                                    ChildName = subparagraph.innerText;
+                                    let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
+                                    // console.log(ChildName)
+                                    // console.log(childEditLen)
+                                    let childEditId = 0;
+                                    let childRantData = 0;
+                                    for (let s = 0; s < childEditLen; s++) {
+                                        let childEditName = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.subMenuName
+
+                                        if (childEditName == ChildName) {
+                                            childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
+                                            childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id
+
+                                        }
+                                    }
+
+
+                                    editbtnSub.disabled = true;
+
+                                    subparagraphURL.contentEditable = true;
+                                    subparagraphURL.style.backgroundColor = "#ebebeb";
+                                    subparagraphURL.style.color = "black";
+                                    subparagraphURL.style.outline = "none";
+                                    subparagraphURL.style.borderRadius = "10px";
+                                    subparagraphURL.style.padding = "1px 10px";
+                                    subparagraphURL.innerHTML = subparagraphURL.innerText
+
+                                    let editDoneBtn = document.createElement('button')
+                                    urlDiv.appendChild(editDoneBtn);
+                                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                    editDoneBtn.setAttribute('type', 'submit');
+                                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                                    editDoneBtn.addEventListener("click", async function () {
+                                        subparagraphURL.contentEditable = false;
+                                        subparagraphURL.innerHTML = subparagraphURL.innerText;
+                                        subparagraphURL.style.backgroundColor = "#ebebeb";
+                                        setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                        subparagraphURL.style.borderRadius = "20px";
+                                        subparagraphURL.style.padding = "0px";
+
+                                        editDoneBtn.style.display = 'none';
+                                        editbtnSub.disabled = false;
+
+
+
+                                        // console.log(paragraph.innerHTML);
+
+                                        let childUpdate = await axios({
+                                            method: 'put',
+                                            url: `${api}store/child/${childEditId}`,
+                                            data: {
+
+                                                "permissionId": childEditId,
+                                                "permissionName": subparagraphURL.innerText,
+                                                "permissionDescription": inputParaDiv.innerText,
+                                                "permissionGroup": nodeName.innerText,
+                                                "permissionControl": "MENU",
+                                                "icon": "sub-icon",
+                                                "permissionLevel": inputParaDiv.innerText,
+                                                "rankData": childRantData
+                                            }
+                                        });
+                                        // console.log(parentUpdate.data);
+
+                                    })
+
+
+                                    subparagraphURL.onkeydown = async function (event) {
+                                        if (event.key === "Enter") {
+                                            subparagraphURL.contentEditable = false;
+                                            editDoneBtn.style.display = 'none'
+
+                                            subparagraphURL.style.backgroundColor = "#9efefe";
+                                            setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                            subparagraphURL.style.borderRadius = "20px";
+                                            subparagraphURL.style.padding = "0px";
+                                            subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
+
+                                            // editDoneBtn2.style.display = 'none';
+                                            editbtnSub.disabled = false;
+                                            if (subparagraphURL.innerHTML === "") {
+                                                alert('Input Content is Empty')
+                                            }
+                                            let childUpdate = await axios({
+                                                method: 'put',
+                                                url: `${api}store/child/${childEditId}`,
+                                                data: {
+
+                                                    "permissionId": childEditId,
+                                                    "permissionName": subparagraphURL.innerText,
+                                                    "permissionDescription": inputParaDiv.innerText,
+                                                    "permissionGroup": nodeName.innerText,
+                                                    "permissionControl": "MENU",
+                                                    "icon": "sub-icon",
+                                                    "permissionLevel": inputParaDiv.innerText,
+                                                    "rankData": childRantData
+                                                }
+                                            });
+
+                                        }
+                                    }
+
 
                                 }
                                 document.getElementById('editsub' + k).onclick = editSubChild;
+                                document.getElementById('editUrl' + k).onclick = editSubChildURL;
+
                                 subInputdel.onclick = removeSub;
 
-                               
+
                                 function handleDragStart(e) {
                                     this.style.opacity = "0.4";
 
@@ -895,6 +1250,7 @@ async function initialValue() {
                                     for (let s = 0; s < childlen; s++) {
 
                                         let childValue = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.subMenuName
+                                        let childURL = `${firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.link}`
 
                                         // console.log(childValue)
 
@@ -917,6 +1273,13 @@ async function initialValue() {
                                         inputTextDiv.appendChild(paraAndEditDiv);
                                         paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                                        let editbtnSub = document.createElement('button')
+                                        paraAndEditDiv.appendChild(editbtnSub)
+                                        editbtnSub.setAttribute('id', 'editsub' + k)
+                                        editbtnSub.setAttribute('class', 'editsub')
+                                        editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                                         let inputParaDiv = document.createElement('p');
                                         paraAndEditDiv.appendChild(inputParaDiv);
                                         inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
@@ -924,17 +1287,31 @@ async function initialValue() {
                                         inputParaDiv.innerHTML = "<i class='ri-check-double-line'></i>" + childValue;
 
 
+                                        let urlDiv = document.createElement('div')
+                                        inputTextDiv.appendChild(urlDiv)
+                                        urlDiv.setAttribute('class', 'URL')
+
+                                        let editUrlBtn = document.createElement('button')
+                                        urlDiv.appendChild(editUrlBtn)
+                                        editUrlBtn.setAttribute('class', 'editUrl')
+                                        editUrlBtn.setAttribute('id', 'editUrl' + k)
+                                        editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
+
+                                        let urlPara = document.createElement('p')
+                                        urlDiv.appendChild(urlPara)
+                                        urlPara.setAttribute('class', 'URLpara')
+                                        urlPara.setAttribute('id', 'URLpara' + k)
+                                        urlPara.innerText = childURL
+
+
                                         let div3 = document.createElement('div')
+                                        div3.setAttribute('class', 'childEditDel')
 
                                         let subInputdel = document.createElement('button')
                                         subInputdel.setAttribute('id', 'ipDelBtn' + k)
                                         subInputdel.setAttribute('class', 'ipDelBtn')
 
-                                        let editbtnSub = document.createElement('button')
-                                        editbtnSub.setAttribute('id', 'editsub' + k)
-                                        editbtnSub.setAttribute('class', 'editsub')
-                                        editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
-                                        div3.appendChild(editbtnSub);
+
 
                                         div3.appendChild(subInputdel);
                                         inputTextDiv.appendChild(div3);
@@ -949,13 +1326,18 @@ async function initialValue() {
                                         subInputdel.onclick = removeSub;
 
                                         let subparagraph = document.getElementById('inputParaDiv' + k)
+                                        let subparagraphURL = document.getElementById('URLpara' + k)
+
 
                                         async function editSubChild() {
-                                            // console.log(id);
-                                            // let childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id;
-                                            // let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
+                                            // let childid=editbtnSub.id;
+                                            let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
 
-                                            // console.log(childDelId)
+                                            let childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id;
+                                            let childEditURL = `${firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.link}`;
+
+                                            console.log(childEditId);
+
 
                                             editbtnSub.disabled = true;
 
@@ -965,18 +1347,64 @@ async function initialValue() {
                                             subparagraph.style.outline = "none";
                                             subparagraph.style.borderRadius = "10px";
                                             subparagraph.style.padding = "1px 10px";
-                                            subparagraph.innerHTML = ""
+                                            subparagraph.innerHTML = subparagraph.innerText
 
+                                            let editDoneBtn = document.createElement('button')
+                                            paraAndEditDiv.appendChild(editDoneBtn);
+                                            editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                            editDoneBtn.setAttribute('type', 'submit');
+                                            editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                                            editDoneBtn.addEventListener("click", async function () {
+                                                subparagraph.contentEditable = false;
+                                                subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                                                subparagraph.style.backgroundColor = "#ebebeb";
+                                                setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                                                subparagraph.style.borderRadius = "20px";
+                                                subparagraph.style.padding = "0px";
+
+                                                editDoneBtn.style.display = 'none';
+                                                editbtnSub.disabled = false;
+
+
+
+                                                // console.log(paragraph.innerHTML);
+
+                                                let childUpdate = await axios({
+                                                    method: 'put',
+                                                    url: `${api}store/child/${childEditId}`,
+                                                    data: {
+
+                                                        "permissionId": childEditId,
+                                                        "permissionName": childEditURL,
+                                                        "permissionDescription": subparagraph.innerText,
+                                                        "permissionGroup": nodeName.innerText,
+                                                        "permissionControl": "MENU",
+                                                        "icon": "sub-icon",
+                                                        "permissionLevel": "Special Coupon",
+                                                        "rankData": childRantData
+                                                    }
+                                                });
+                                                // console.log(parentUpdate.data);
+
+                                            })
 
 
                                             subparagraph.onkeydown = async function (event) {
                                                 if (event.key === "Enter") {
                                                     subparagraph.contentEditable = false;
+                                                    editDoneBtn.style.display = 'none'
+
                                                     subparagraph.style.backgroundColor = "#9efefe";
                                                     setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
 
                                                     subparagraph.style.borderRadius = "20px";
                                                     subparagraph.style.padding = "0px";
+                                                    subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
 
                                                     // editDoneBtn2.style.display = 'none';
                                                     editbtnSub.disabled = false;
@@ -989,8 +1417,110 @@ async function initialValue() {
                                                         data: {
 
                                                             "permissionId": childEditId,
-                                                            "permissionName": "/coupon/special-coupon",
-                                                            "permissionDescription": subparagraph.innerHTML,
+                                                            "permissionName": childEditURL,
+                                                            "permissionDescription": subparagraph.innerText,
+                                                            "permissionGroup": nodeName.innerText,
+                                                            "permissionControl": "MENU",
+                                                            "icon": "sub-icon",
+                                                            "permissionLevel": "Special Coupon",
+                                                            "rankData": childRantData
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+
+
+                                        }
+                                        async function editSubChildURL() {
+                                            console.log(subparagraphURL);
+                                            // let childid=editbtnSub.id;
+                                            let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
+
+                                            let childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id;
+                                            console.log(childEditId);
+
+
+                                            editbtnSub.disabled = true;
+
+                                            subparagraphURL.contentEditable = true;
+                                            subparagraphURL.style.backgroundColor = "#ebebeb";
+                                            subparagraphURL.style.color = "black";
+                                            subparagraphURL.style.outline = "none";
+                                            subparagraphURL.style.borderRadius = "10px";
+                                            subparagraphURL.style.padding = "1px 10px";
+                                            subparagraphURL.innerHTML = subparagraphURL.innerText
+
+                                            let editDoneBtn = document.createElement('button')
+                                            urlDiv.appendChild(editDoneBtn);
+                                            editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                            editDoneBtn.setAttribute('type', 'submit');
+                                            editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                                            editDoneBtn.addEventListener("click", async function () {
+                                                subparagraphURL.contentEditable = false;
+                                                subparagraphURL.innerHTML = subparagraphURL.innerText;
+                                                subparagraphURL.style.backgroundColor = "#ebebeb";
+                                                setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                                subparagraphURL.style.borderRadius = "20px";
+                                                subparagraphURL.style.padding = "0px";
+
+                                                editDoneBtn.style.display = 'none';
+                                                editbtnSub.disabled = false;
+
+
+
+                                                // console.log(paragraph.innerHTML);
+
+                                                let childUpdate = await axios({
+                                                    method: 'put',
+                                                    url: `${api}store/child/${childEditId}`,
+                                                    data: {
+
+                                                        "permissionId": childEditId,
+                                                        "permissionName": subparagraphURL.innerText,
+                                                        "permissionDescription": inputParaDiv.innerText,
+                                                        "permissionGroup": nodeName.innerText,
+                                                        "permissionControl": "MENU",
+                                                        "icon": "sub-icon",
+                                                        "permissionLevel": "Special Coupon",
+                                                        "rankData": childRantData
+                                                    }
+                                                });
+                                                // console.log(parentUpdate.data);
+
+                                            })
+
+
+                                            subparagraphURL.onkeydown = async function (event) {
+                                                if (event.key === "Enter") {
+                                                    subparagraphURL.contentEditable = false;
+                                                    editDoneBtn.style.display = 'none'
+
+                                                    subparagraphURL.style.backgroundColor = "#9efefe";
+                                                    setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                                    subparagraphURL.style.borderRadius = "20px";
+                                                    subparagraphURL.style.padding = "0px";
+                                                    subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
+
+                                                    // editDoneBtn2.style.display = 'none';
+                                                    editbtnSub.disabled = false;
+                                                    if (subparagraphURL.innerHTML === "") {
+                                                        alert('Input Content is Empty')
+                                                    }
+                                                    let childUpdate = await axios({
+                                                        method: 'put',
+                                                        url: `${api}store/child/${childEditId}`,
+                                                        data: {
+
+                                                            "permissionId": childEditId,
+                                                            "permissionName": subparagraphURL.innerText,
+                                                            "permissionDescription": inputParaDiv.innerText,
                                                             "permissionGroup": nodeName.innerText,
                                                             "permissionControl": "MENU",
                                                             "icon": "sub-icon",
@@ -1005,12 +1535,13 @@ async function initialValue() {
 
                                         }
                                         document.getElementById('editsub' + k).onclick = editSubChild;
+                                        document.getElementById('editUrl' + k).onclick = editSubChildURL;
 
                                         k++
 
                                     }
                                 }
-                                
+
                                 function handleDragStart(e) {
                                     this.style.opacity = "0.4";
 
@@ -1127,24 +1658,46 @@ async function initialValue() {
                                 inputTextDiv.appendChild(paraAndEditDiv);
                                 paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                                let editbtnSub = document.createElement('button')
+                                paraAndEditDiv.appendChild(editbtnSub)
+                                editbtnSub.setAttribute('id', 'editsub' + k)
+                                editbtnSub.setAttribute('class', 'editsub')
+                                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                                 let inputParaDiv = document.createElement('p');
                                 paraAndEditDiv.appendChild(inputParaDiv);
                                 inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
                                 inputParaDiv.setAttribute('id', 'inputParaDiv' + k)
                                 inputParaDiv.innerHTML = "<i class='ri-check-double-line'></i>" + subInputValue;
 
+
+                                let urlDiv = document.createElement('div')
+                                inputTextDiv.appendChild(urlDiv)
+                                urlDiv.setAttribute('class', 'URL')
+
+                                let editUrlBtn = document.createElement('button')
+                                urlDiv.appendChild(editUrlBtn)
+                                editUrlBtn.setAttribute('class', 'editUrl')
+                                editUrlBtn.setAttribute('id', 'editUrl' + k)
+                                editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
+
+                                let urlPara = document.createElement('p')
+                                urlDiv.appendChild(urlPara)
+                                urlPara.setAttribute('class', 'URLpara')
+                                urlPara.setAttribute('id', 'URLpara' + k)
+                                urlPara.innerText = 'Edit Url here'
+
                                 let div3 = document.createElement('div')
+                                div3.setAttribute('class', 'childEditDel')
+
 
                                 let subInputdel = document.createElement('button')
                                 subInputdel.setAttribute('id', 'ipDelBtn' + k)
                                 subInputdel.setAttribute('class', 'ipDelBtn')
 
 
-                                let editbtnSub = document.createElement('button')
-                                editbtnSub.setAttribute('id', 'editsub' + k)
-                                editbtnSub.setAttribute('class', 'editsub')
-                                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
-                                div3.appendChild(editbtnSub);
+
 
                                 div3.appendChild(subInputdel);
                                 inputTextDiv.appendChild(div3);
@@ -1155,12 +1708,12 @@ async function initialValue() {
                                     url: `${api}store/child`,
                                     data: {
 
-                                        "permissionName": "/coupon/special-coupon",
+                                        "permissionName": urlPara.innerText,
                                         "permissionDescription": subInputValue,
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
-                                        "permissionLevel": "Special Coupon",
+                                        "permissionLevel": subInputValue,
                                         "rankData": rankDataChild++
                                     }
                                 });
@@ -1192,8 +1745,123 @@ async function initialValue() {
                                     await axios.delete(`${api}store/child/${delIdOfChild}`, payload, config);
                                 };
                                 let subparagraph = document.getElementById('inputParaDiv' + k)
+                                let subparagraphURL = document.getElementById('URLpara' + k)
 
                                 async function editSubChild() {
+
+                                    ChildName = subparagraph.innerText;
+                                    let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
+                                    // console.log(ChildName)
+                                    // console.log(childEditLen)
+                                    let childEditId = 0;
+                                    let childRantData = 0;
+                                    let childEditURL = ''
+                                    for (let s = 0; s < childEditLen; s++) {
+                                        let childEditName = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.subMenuName
+
+                                        if (childEditName == ChildName) {
+                                            childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
+                                            childEditId = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id
+                                            childEditURL = `${firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.link}`;
+
+
+                                        }
+                                    }
+
+
+                                    editbtnSub.disabled = true;
+
+                                    subparagraph.contentEditable = true;
+                                    subparagraph.style.backgroundColor = "#ebebeb";
+                                    subparagraph.style.color = "black";
+                                    subparagraph.style.outline = "none";
+                                    subparagraph.style.borderRadius = "10px";
+                                    subparagraph.style.padding = "1px 10px";
+                                    subparagraph.innerHTML = subparagraph.innerText
+
+                                    let editDoneBtn = document.createElement('button')
+                                    paraAndEditDiv.appendChild(editDoneBtn);
+                                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                    editDoneBtn.setAttribute('type', 'submit');
+                                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                                    editDoneBtn.addEventListener("click", async function () {
+                                        subparagraph.contentEditable = false;
+                                        subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                                        subparagraph.style.backgroundColor = "#ebebeb";
+                                        setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                                        subparagraph.style.borderRadius = "20px";
+                                        subparagraph.style.padding = "0px";
+
+                                        editDoneBtn.style.display = 'none';
+                                        editbtnSub.disabled = false;
+
+
+
+                                        // console.log(paragraph.innerHTML);
+
+                                        let childUpdate = await axios({
+                                            method: 'put',
+                                            url: `${api}store/child/${childEditId}`,
+                                            data: {
+
+                                                "permissionId": childEditId,
+                                                "permissionName": childEditURL,
+                                                "permissionDescription": subparagraph.innerText,
+                                                "permissionGroup": nodeName.innerText,
+                                                "permissionControl": "MENU",
+                                                "icon": "sub-icon",
+                                                "permissionLevel": "Special Coupon",
+                                                "rankData": childRantData
+                                            }
+                                        });
+                                        // console.log(parentUpdate.data);
+
+                                    })
+
+
+                                    subparagraph.onkeydown = async function (event) {
+                                        if (event.key === "Enter") {
+                                            subparagraph.contentEditable = false;
+                                            editDoneBtn.style.display = 'none'
+
+                                            subparagraph.style.backgroundColor = "#9efefe";
+                                            setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                                            subparagraph.style.borderRadius = "20px";
+                                            subparagraph.style.padding = "0px";
+                                            subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
+
+                                            // editDoneBtn2.style.display = 'none';
+                                            editbtnSub.disabled = false;
+                                            if (subparagraph.innerHTML === "") {
+                                                alert('Input Content is Empty')
+                                            }
+                                            let childUpdate = await axios({
+                                                method: 'put',
+                                                url: `${api}store/child/${childEditId}`,
+                                                data: {
+
+                                                    "permissionId": childEditId,
+                                                    "permissionName": childEditURL,
+                                                    "permissionDescription": subparagraph.innerText,
+                                                    "permissionGroup": nodeName.innerText,
+                                                    "permissionControl": "MENU",
+                                                    "icon": "sub-icon",
+                                                    "permissionLevel": "Special Coupon",
+                                                    "rankData": childRantData
+                                                }
+                                            });
+
+                                        }
+                                    }
+
+                                }
+                                async function editSubChildURL() {
 
                                     ChildName = subparagraph.innerText;
                                     let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
@@ -1214,26 +1882,74 @@ async function initialValue() {
 
                                     editbtnSub.disabled = true;
 
-                                    subparagraph.contentEditable = true;
-                                    subparagraph.style.backgroundColor = "#ebebeb";
-                                    subparagraph.style.color = "black";
-                                    subparagraph.style.outline = "none";
-                                    subparagraph.style.borderRadius = "10px";
-                                    subparagraph.style.padding = "1px 10px";
-                                    subparagraph.innerHTML = ""
+                                    subparagraphURL.contentEditable = true;
+                                    subparagraphURL.style.backgroundColor = "#ebebeb";
+                                    subparagraphURL.style.color = "black";
+                                    subparagraphURL.style.outline = "none";
+                                    subparagraphURL.style.borderRadius = "10px";
+                                    subparagraphURL.style.padding = "1px 10px";
+                                    subparagraphURL.innerHTML = subparagraphURL.innerText
 
-                                    subparagraph.onkeydown = async function (event) {
+                                    let editDoneBtn = document.createElement('button')
+                                    urlDiv.appendChild(editDoneBtn);
+                                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                                    editDoneBtn.setAttribute('type', 'submit');
+                                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                                    editDoneBtn.addEventListener("click", async function () {
+                                        subparagraphURL.contentEditable = false;
+                                        subparagraphURL.innerHTML = subparagraphURL.innerText;
+                                        subparagraphURL.style.backgroundColor = "#ebebeb";
+                                        setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                        subparagraphURL.style.borderRadius = "20px";
+                                        subparagraphURL.style.padding = "0px";
+
+                                        editDoneBtn.style.display = 'none';
+                                        editbtnSub.disabled = false;
+
+
+
+                                        // console.log(paragraph.innerHTML);
+
+                                        let childUpdate = await axios({
+                                            method: 'put',
+                                            url: `${api}store/child/${childEditId}`,
+                                            data: {
+
+                                                "permissionId": childEditId,
+                                                "permissionName": subparagraphURL.innerText,
+                                                "permissionDescription": inputParaDiv.innerText,
+                                                "permissionGroup": nodeName.innerText,
+                                                "permissionControl": "MENU",
+                                                "icon": "sub-icon",
+                                                "permissionLevel": "Special Coupon",
+                                                "rankData": childRantData
+                                            }
+                                        });
+                                        // console.log(parentUpdate.data);
+
+                                    })
+
+
+                                    subparagraphURL.onkeydown = async function (event) {
                                         if (event.key === "Enter") {
-                                            subparagraph.contentEditable = false;
-                                            subparagraph.style.backgroundColor = "#9efefe";
-                                            setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+                                            subparagraphURL.contentEditable = false;
+                                            editDoneBtn.style.display = 'none'
 
-                                            subparagraph.style.borderRadius = "20px";
-                                            subparagraph.style.padding = "0px";
+                                            subparagraphURL.style.backgroundColor = "#9efefe";
+                                            setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                            subparagraphURL.style.borderRadius = "20px";
+                                            subparagraphURL.style.padding = "0px";
+                                            subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
 
                                             // editDoneBtn2.style.display = 'none';
                                             editbtnSub.disabled = false;
-                                            if (subparagraph.innerHTML === "") {
+                                            if (subparagraphURL.innerHTML === "") {
                                                 alert('Input Content is Empty')
                                             }
                                             let childUpdate = await axios({
@@ -1242,8 +1958,8 @@ async function initialValue() {
                                                 data: {
 
                                                     "permissionId": childEditId,
-                                                    "permissionName": "/coupon/special-coupon",
-                                                    "permissionDescription": subparagraph.innerHTML,
+                                                    "permissionName": subparagraphURL.innerText,
+                                                    "permissionDescription": inputParaDiv.innerText,
                                                     "permissionGroup": nodeName.innerText,
                                                     "permissionControl": "MENU",
                                                     "icon": "sub-icon",
@@ -1258,8 +1974,10 @@ async function initialValue() {
 
                                 }
                                 document.getElementById('editsub' + k).onclick = editSubChild;
+                                document.getElementById('editUrl' + k).onclick = editSubChildURL;
+
                                 subInputdel.onclick = removeSub;
-                                
+
                                 function handleDragStart(e) {
                                     this.style.opacity = "0.4";
 
@@ -1361,7 +2079,7 @@ async function initialValue() {
 
                             subInputbtn.onclick = getSubIpValue;
 
-                            
+
                         }
 
 
@@ -1388,15 +2106,60 @@ async function initialValue() {
                         paragraph.style.borderRadius = "10px";
                         paragraph.style.padding = "1px 10px";
 
-                        // let editDoneBtn = document.createElement('button')
-                        // div1.appendChild(editDoneBtn);
-                        // editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
-                        // editDoneBtn.setAttribute('type', 'submit');
-                        // editDoneBtn.setAttribute('id', 'end-editing')
+                        let editDoneBtn = document.createElement('button')
+                        div1.appendChild(editDoneBtn);
+                        editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                        editDoneBtn.setAttribute('type', 'submit');
+                        editDoneBtn.setAttribute('id', 'end-editing')
+
+
+
+                        editDoneBtn.addEventListener("click", function () {
+                            paragraph.contentEditable = false;
+                            paragraph.style.backgroundColor = "#b6ff46";
+                            setTimeout(function () { paragraph.style.backgroundColor = "white"; }, 3000);
+
+                            paragraph.style.borderRadius = "20px";
+                            paragraph.style.padding = "0px";
+
+                            editDoneBtn.style.display = 'none';
+                            editbtn.disabled = false;
+                            editbtn.disabled = false;
+
+                            // console.log(paragraph.innerHTML);
+
+                            let parentUpdate = axios({
+                                method: 'put',
+                                url: `${api}store/parent/${idOfParent}`,
+                                data: {
+
+                                    "permissionId": idOfParent,
+                                    "permissionName": "/coupon/special-coupon",
+                                    "permissionDescription": paragraph.innerHTML,
+                                    "permissionGroup": "Root",
+                                    "permissionControl": "MENU",
+                                    // "icon": "sub-icon",
+                                    "permissionLevel": "Special Coupon",
+                                    "rankData": parentRankData,
+
+                                    // "permissionId": idOfParent,
+                                    // "permissionName": "/coupon/special-coupon",
+                                    // "permissionDescription": paragraph.innerHTML,
+                                    // "permissionGroup": "Root",
+                                    // "permissionControl": "MENU",
+                                    // // "icon": "sub-icon",
+                                    // "permissionLevel": "Special Coupon",
+                                    // // "rankData": "64"
+                                }
+                            });
+                            // console.log(parentUpdate.data);
+
+                        })
 
                         paragraph.onkeydown = async function (event) {
 
                             if (event.key === "Enter") {
+                                editDoneBtn.style.display = 'none'
                                 paragraph.contentEditable = false;
                                 paragraph.style.backgroundColor = "#b6ff46";
                                 setTimeout(function () { paragraph.style.backgroundColor = "white"; }, 3000);
@@ -1429,40 +2192,6 @@ async function initialValue() {
 
                             }
                         }
-
-                        // editDoneBtn.addEventListener("click", function () {
-                        //     paragraph.contentEditable = false;
-                        //     paragraph.style.backgroundColor = "#b6ff46";
-                        //     setTimeout(function () { paragraph.style.backgroundColor = "white"; }, 3000);
-
-                        //     paragraph.style.borderRadius = "20px";
-                        //     paragraph.style.padding = "0px";
-
-                        //     editDoneBtn.style.display = 'none';
-                        //     editbtn.disabled = false;
-                        //     editbtn.disabled = false;
-
-                        //     // console.log(paragraph.innerHTML);
-
-                        //     let parentUpdate = axios({
-                        //         method: 'put',
-                        //         url: `${api}store/parent/${idOfParent}`,
-                        //         data: {
-
-                        //             "permissionId": idOfParent,
-                        //             "permissionName": "/coupon/special-coupon",
-                        //             "permissionDescription": paragraph.innerHTML,
-                        //             "permissionGroup": "Root",
-                        //             "permissionControl": "MENU",
-                        //             // "icon": "sub-icon",
-                        //             "permissionLevel": "Special Coupon",
-                        //             // "rankData": "64"
-                        //         }
-                        //     });
-                        //     // console.log(parentUpdate.data);
-
-                        // })
-                        // }
 
 
                     }
@@ -1597,7 +2326,7 @@ async function addNode() {
             "permissionGroup": "Root",
             "permissionControl": "Group",
             "icon": "store-front",
-            "permissionLevel": " Merchants",
+            "permissionLevel": itemValue,
             "rankData": rankDataParent++,
         }
     });
@@ -1683,7 +2412,8 @@ async function addNode() {
 
                 for (let s = 0; s < manualChildLength; s++) {
                     let manualIpChildName = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.subMenuName
-                    console.log(manualIpChildName);
+                    let manualIpChildURL = `${firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.link}`
+                    // console.log(manualIpChildName);
 
                     // let subInputValue = subInput.value;
                     let b = document.createElement('div')
@@ -1704,6 +2434,13 @@ async function addNode() {
                     inputTextDiv.appendChild(paraAndEditDiv);
                     paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                    let editbtnSub = document.createElement('button')
+                    paraAndEditDiv.appendChild(editbtnSub)
+                    editbtnSub.setAttribute('id', 'editsub' + k)
+                    editbtnSub.setAttribute('class', 'editsub')
+                    editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                     let inputParaDiv = document.createElement('p');
                     paraAndEditDiv.appendChild(inputParaDiv);
                     inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
@@ -1714,6 +2451,22 @@ async function addNode() {
                     inputParaDiv.innerHTML = "<i class='ri-check-double-line'></i>" + manualIpChildName;
 
 
+                    let urlDiv = document.createElement('div')
+                    inputTextDiv.appendChild(urlDiv)
+                    urlDiv.setAttribute('class', 'URL')
+
+                    let editUrlBtn = document.createElement('button')
+                    urlDiv.appendChild(editUrlBtn)
+                    editUrlBtn.setAttribute('class', 'editUrl')
+                    editUrlBtn.setAttribute('id', 'editUrl' + k)
+                    editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
+
+                    let urlPara = document.createElement('p')
+                    urlDiv.appendChild(urlPara)
+                    urlPara.setAttribute('class', 'URLpara')
+                    urlPara.setAttribute('class', 'URLpara' + k)
+                    urlPara.innerText = manualIpChildURL
+
 
                     let div3 = document.createElement('div')
                     div3.setAttribute('class', 'childEditDel')
@@ -1722,11 +2475,7 @@ async function addNode() {
                     subInputdel.setAttribute('id', 'ipDelBtn' + k)
                     subInputdel.setAttribute('class', 'ipDelBtn')
 
-                    let editbtnSub = document.createElement('button')
-                    editbtnSub.setAttribute('id', 'editsub' + k)
-                    editbtnSub.setAttribute('class', 'editsub')
-                    editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
-                    div3.appendChild(editbtnSub);
+
 
                     div3.appendChild(subInputdel);
                     inputTextDiv.appendChild(div3);
@@ -1746,12 +2495,15 @@ async function addNode() {
 
                     };
                     let subparagraph = document.getElementById('inputParaDiv' + k)
+                    let subparagraphURL = document.getElementById('URLpara' + k)
 
                     async function editSubChild() {
 
                         let childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
 
                         let childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id;
+                        let childEditURL = `${firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.link}`
+
 
                         editbtnSub.disabled = true;
 
@@ -1761,32 +2513,78 @@ async function addNode() {
                         subparagraph.style.outline = "none";
                         subparagraph.style.borderRadius = "10px";
                         subparagraph.style.padding = "1px 10px";
-                        subparagraph.innerHTML = ""
+                        subparagraph.innerHTML = subparagraph.innerText
 
+                        let editDoneBtn = document.createElement('button')
+                        paraAndEditDiv.appendChild(editDoneBtn);
+                        editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                        editDoneBtn.setAttribute('type', 'submit');
+                        editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                        editDoneBtn.addEventListener("click", async function () {
+                            subparagraph.contentEditable = false;
+                            subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                            subparagraph.style.backgroundColor = "#ebebeb";
+                            setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                            subparagraph.style.borderRadius = "20px";
+                            subparagraph.style.padding = "0px";
+
+                            editDoneBtn.style.display = 'none';
+                            editbtnSub.disabled = false;
+
+
+
+                            // console.log(paragraph.innerHTML);
+
+                            let childUpdate = await axios({
+                                method: 'put',
+                                url: `${api}store/child/${childEditId}`,
+                                data: {
+
+                                    "permissionId": childEditId,
+                                    "permissionName": childEditURL,
+                                    "permissionDescription": subparagraph.innerText,
+                                    "permissionGroup": nodeName.innerText,
+                                    "permissionControl": "MENU",
+                                    "icon": "sub-icon",
+                                    "permissionLevel": "Special Coupon",
+                                    "rankData": childRantData
+                                }
+                            });
+                            // console.log(parentUpdate.data);
+
+                        })
 
 
                         subparagraph.onkeydown = async function (event) {
                             if (event.key === "Enter") {
                                 subparagraph.contentEditable = false;
+                                editDoneBtn.style.display = 'none'
+
                                 subparagraph.style.backgroundColor = "#9efefe";
                                 setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
 
                                 subparagraph.style.borderRadius = "20px";
                                 subparagraph.style.padding = "0px";
+                                subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
 
                                 // editDoneBtn2.style.display = 'none';
                                 editbtnSub.disabled = false;
                                 if (subparagraph.innerHTML === "") {
                                     alert('Input Content is Empty')
                                 }
-                                await axios({
+                                let childUpdate = await axios({
                                     method: 'put',
                                     url: `${api}store/child/${childEditId}`,
                                     data: {
 
                                         "permissionId": childEditId,
-                                        "permissionName": "/coupon/special-coupon",
-                                        "permissionDescription": subparagraph.innerHTML,
+                                        "permissionName": childEditURL,
+                                        "permissionDescription": subparagraph.innerText,
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
@@ -1800,15 +2598,117 @@ async function addNode() {
 
 
                     }
+                    async function editSubChildURL() {
+                        // console.log(subparagraphURL);
+                        // let childid=editbtnSub.id;
+                        let childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
 
+                        let childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id;
+                        // console.log(childEditId);
+
+
+                        editbtnSub.disabled = true;
+
+                        subparagraphURL.contentEditable = true;
+                        subparagraphURL.style.backgroundColor = "#ebebeb";
+                        subparagraphURL.style.color = "black";
+                        subparagraphURL.style.outline = "none";
+                        subparagraphURL.style.borderRadius = "10px";
+                        subparagraphURL.style.padding = "1px 10px";
+                        subparagraphURL.innerHTML = subparagraphURL.innerText
+
+                        let editDoneBtn = document.createElement('button')
+                        urlDiv.appendChild(editDoneBtn);
+                        editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                        editDoneBtn.setAttribute('type', 'submit');
+                        editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                        editDoneBtn.addEventListener("click", async function () {
+                            subparagraphURL.contentEditable = false;
+                            subparagraphURL.innerHTML = subparagraphURL.innerText;
+                            subparagraphURL.style.backgroundColor = "#ebebeb";
+                            setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                            subparagraphURL.style.borderRadius = "20px";
+                            subparagraphURL.style.padding = "0px";
+
+                            editDoneBtn.style.display = 'none';
+                            editbtnSub.disabled = false;
+
+
+
+                            // console.log(paragraph.innerHTML);
+
+                            let childUpdate = await axios({
+                                method: 'put',
+                                url: `${api}store/child/${childEditId}`,
+                                data: {
+
+                                    "permissionId": childEditId,
+                                    "permissionName": subparagraphURL.innerText,
+                                    "permissionDescription": inputParaDiv.innerText,
+                                    "permissionGroup": nodeName.innerText,
+                                    "permissionControl": "MENU",
+                                    "icon": "sub-icon",
+                                    "permissionLevel": inputParaDiv.innerText,
+                                    "rankData": childRantData
+                                }
+                            });
+                            // console.log(parentUpdate.data);
+
+                        })
+
+
+                        subparagraphURL.onkeydown = async function (event) {
+                            if (event.key === "Enter") {
+                                subparagraphURL.contentEditable = false;
+                                editDoneBtn.style.display = 'none'
+
+                                subparagraphURL.style.backgroundColor = "#9efefe";
+                                setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                subparagraphURL.style.borderRadius = "20px";
+                                subparagraphURL.style.padding = "0px";
+                                subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
+
+                                // editDoneBtn2.style.display = 'none';
+                                editbtnSub.disabled = false;
+                                if (subparagraphURL.innerHTML === "") {
+                                    alert('Input Content is Empty')
+                                }
+                                let childUpdate = await axios({
+                                    method: 'put',
+                                    url: `${api}store/child/${childEditId}`,
+                                    data: {
+
+                                        "permissionId": childEditId,
+                                        "permissionName": subparagraphURL.innerText,
+                                        "permissionDescription": inputParaDiv.innerText,
+                                        "permissionGroup": nodeName.innerText,
+                                        "permissionControl": "MENU",
+                                        "icon": "sub-icon",
+                                        "permissionLevel": "Special Coupon",
+                                        "rankData": childRantData
+                                    }
+                                });
+
+                            }
+                        }
+
+
+                    }
                     document.getElementById('editsub' + k).onclick = editSubChild;
+                    document.getElementById('editUrl' + k).onclick = editSubChildURL;
 
                     subInputdel.onclick = removeSub;
 
                     k++
 
                 }
-                
+
                 function handleDragStart(e) {
                     this.style.opacity = "0.4";
 
@@ -1926,22 +2826,45 @@ async function addNode() {
                 inputTextDiv.appendChild(paraAndEditDiv);
                 paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                let editbtnSub = document.createElement('button')
+                paraAndEditDiv.appendChild(editbtnSub)
+                editbtnSub.setAttribute('id', 'editsub' + k)
+                editbtnSub.setAttribute('class', 'editsub')
+                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                 let inputParaDiv = document.createElement('p');
                 paraAndEditDiv.appendChild(inputParaDiv);
                 inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
                 inputParaDiv.setAttribute('id', 'inputParaDiv' + k)
                 inputParaDiv.innerHTML = "<i class='ri-check-double-line'></i>" + subInputValue;
 
+                let urlDiv = document.createElement('div')
+                inputTextDiv.appendChild(urlDiv)
+                urlDiv.setAttribute('class', 'URL')
+
+                let editUrlBtn = document.createElement('button')
+                urlDiv.appendChild(editUrlBtn)
+                editUrlBtn.setAttribute('class', 'editUrl')
+                editUrlBtn.setAttribute('id', 'editUrl' + k)
+                editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
+
+                let urlPara = document.createElement('p')
+                urlDiv.appendChild(urlPara)
+                urlPara.setAttribute('class', 'URLpara')
+                urlPara.setAttribute('id', 'URLpara' + k)
+                urlPara.innerText = 'Edit Url here'
+
+
                 let div3 = document.createElement('div')
+                div3.setAttribute('class', 'childEditDel')
+
 
                 let subInputdel = document.createElement('button')
                 subInputdel.setAttribute('id', 'ipDelBtn' + k)
                 subInputdel.setAttribute('class', 'ipDelBtn')
 
-                let editbtnSub = document.createElement('button')
-                editbtnSub.setAttribute('id', 'editsub' + k)
-                editbtnSub.setAttribute('class', 'editsub')
-                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
 
                 div3.appendChild(editbtnSub);
 
@@ -1950,18 +2873,19 @@ async function addNode() {
                 subInputdel.innerHTML = "<i class='ri-delete-bin-fill'></i>";
 
                 let subparagraph = document.getElementById('inputParaDiv' + k)
+                let subparagraphURL = document.getElementById('URLpara' + k)
 
                 await axios({
                     method: 'post',
                     url: `${api}store/child`,
                     data: {
 
-                        "permissionName": "/coupon/special-coupon",
+                        "permissionName": urlPara.innerText,
                         "permissionDescription": subInputValue,
                         "permissionGroup": nodeName.innerText,
                         "permissionControl": "MENU",
                         "icon": "sub-icon",
-                        "permissionLevel": "Special Coupon",
+                        "permissionLevel": subInputValue,
                         "rankData": rankDataChild++,
                     }
                 });
@@ -1977,17 +2901,17 @@ async function addNode() {
 
                     this.parentNode.parentNode.parentNode.remove();
                     ChildName = subparagraph.innerText;
-                    let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
+                    let childEditLen = firstApiResponse1.data[0].payLoad[parentIndex].menus.length;
                     // console.log(ChildName)
                     // console.log(childEditLen)
                     let delIdOfChild = 0;
                     let childRantData = 0;
                     for (let s = 0; s < childEditLen; s++) {
-                        let childEditName = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.subMenuName
+                        let childEditName = firstApiResponse1.data[0].payLoad[parentIndex].menus[s].subMenu.subMenuName
 
                         if (childEditName == ChildName) {
-                            childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
-                            delIdOfChild = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.id;
+                            childRantData = firstApiResponse1.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
+                            delIdOfChild = firstApiResponse1.data[0].payLoad[parentIndex].menus[s].subMenu.id;
 
 
                         }
@@ -1998,7 +2922,122 @@ async function addNode() {
 
                 async function editSubChild() {
                     ChildName = subparagraph.innerText;
-                    let childEditLen = firstApiResponse.data[0].payLoad[x].menus.length;
+                    let childEditLen = firstApiResponse.data[0].payLoad[parentIndex].menus.length;
+                    // console.log(ChildName)
+                    // console.log(childEditLen)
+                    let childEditId = 0;
+                    let childRantData = 0;
+                    let childEditURL = '';
+                    for (let s = 0; s < childEditLen; s++) {
+                        let childEditName = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.subMenuName
+
+                        if (childEditName == ChildName) {
+                            childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
+                            childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id
+                            childEditURL = `${firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.link}`
+
+
+
+                        }
+                    }
+                    // for(let x=0;x<)
+                    editbtnSub.disabled = true;
+
+                    subparagraph.contentEditable = true;
+                    subparagraph.style.backgroundColor = "#ebebeb";
+                    subparagraph.style.color = "black";
+                    subparagraph.style.outline = "none";
+                    subparagraph.style.borderRadius = "10px";
+                    subparagraph.style.padding = "1px 10px";
+                    subparagraph.innerHTML = subparagraph.innerText
+
+                    let editDoneBtn = document.createElement('button')
+                    paraAndEditDiv.appendChild(editDoneBtn);
+                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                    editDoneBtn.setAttribute('type', 'submit');
+                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                    editDoneBtn.addEventListener("click", async function () {
+                        subparagraph.contentEditable = false;
+                        subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                        subparagraph.style.backgroundColor = "#ebebeb";
+                        setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                        subparagraph.style.borderRadius = "20px";
+                        subparagraph.style.padding = "0px";
+
+                        editDoneBtn.style.display = 'none';
+                        editbtnSub.disabled = false;
+
+
+
+                        // console.log(paragraph.innerHTML);
+
+                        let childUpdate = await axios({
+                            method: 'put',
+                            url: `${api}store/child/${childEditId}`,
+                            data: {
+
+                                "permissionId": childEditId,
+                                "permissionName": childEditURL,
+                                "permissionDescription": subparagraph.innerText,
+                                "permissionGroup": nodeName.innerText,
+                                "permissionControl": "MENU",
+                                "icon": "sub-icon",
+                                "permissionLevel": "Special Coupon",
+                                "rankData": childRantData
+                            }
+                        });
+                        // console.log(parentUpdate.data);
+
+                    })
+
+
+                    subparagraph.onkeydown = async function (event) {
+                        if (event.key === "Enter") {
+                            subparagraph.contentEditable = false;
+                            editDoneBtn.style.display = 'none'
+
+                            subparagraph.style.backgroundColor = "#9efefe";
+                            setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                            subparagraph.style.borderRadius = "20px";
+                            subparagraph.style.padding = "0px";
+                            subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
+
+                            // editDoneBtn2.style.display = 'none';
+                            editbtnSub.disabled = false;
+                            if (subparagraph.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
+                            let childUpdate = await axios({
+                                method: 'put',
+                                url: `${api}store/child/${childEditId}`,
+                                data: {
+
+                                    "permissionId": childEditId,
+                                    "permissionName": childEditURL,
+                                    "permissionDescription": subparagraph.innerText,
+                                    "permissionGroup": nodeName.innerText,
+                                    "permissionControl": "MENU",
+                                    "icon": "sub-icon",
+                                    "permissionLevel": "Special Coupon",
+                                    "rankData": childRantData
+                                }
+                            });
+
+                        }
+                    }
+
+
+                }
+                async function editSubChildURL() {
+
+                    ChildName = subparagraph.innerText;
+                    let childEditLen = firstApiResponse.data[0].payLoad[parentIndex].menus.length;
                     // console.log(ChildName)
                     // console.log(childEditLen)
                     let childEditId = 0;
@@ -2013,44 +3052,93 @@ async function addNode() {
 
                         }
                     }
-                    // for(let x=0;x<)
+
+
                     editbtnSub.disabled = true;
 
-                    subparagraph.contentEditable = true;
-                    subparagraph.style.backgroundColor = "#ebebeb";
-                    subparagraph.style.color = "black";
-                    subparagraph.style.outline = "none";
-                    subparagraph.style.borderRadius = "10px";
-                    subparagraph.style.padding = "1px 10px";
-                    subparagraph.innerHTML = ""
+                    subparagraphURL.contentEditable = true;
+                    subparagraphURL.style.backgroundColor = "#ebebeb";
+                    subparagraphURL.style.color = "black";
+                    subparagraphURL.style.outline = "none";
+                    subparagraphURL.style.borderRadius = "10px";
+                    subparagraphURL.style.padding = "1px 10px";
+                    subparagraphURL.innerHTML = subparagraphURL.innerText
 
-                    subparagraph.onkeydown = async function (event) {
+                    let editDoneBtn = document.createElement('button')
+                    urlDiv.appendChild(editDoneBtn);
+                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                    editDoneBtn.setAttribute('type', 'submit');
+                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                    editDoneBtn.addEventListener("click", async function () {
+                        subparagraphURL.contentEditable = false;
+                        subparagraphURL.innerHTML = subparagraphURL.innerText;
+                        subparagraphURL.style.backgroundColor = "#ebebeb";
+                        setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                        subparagraphURL.style.borderRadius = "20px";
+                        subparagraphURL.style.padding = "0px";
+
+                        editDoneBtn.style.display = 'none';
+                        editbtnSub.disabled = false;
+
+
+
+                        // console.log(paragraph.innerHTML);
+
+                        let childUpdate = await axios({
+                            method: 'put',
+                            url: `${api}store/child/${childEditId}`,
+                            data: {
+
+                                "permissionId": childEditId,
+                                "permissionName": subparagraphURL.innerText,
+                                "permissionDescription": inputParaDiv.innerText,
+                                "permissionGroup": nodeName.innerText,
+                                "permissionControl": "MENU",
+                                "icon": "sub-icon",
+                                "permissionLevel": inputParaDiv.innerText,
+                                "rankData": childRantData
+                            }
+                        });
+                        // console.log(parentUpdate.data);
+
+                    })
+
+
+                    subparagraphURL.onkeydown = async function (event) {
                         if (event.key === "Enter") {
-                            subparagraph.contentEditable = false;
-                            subparagraph.style.backgroundColor = "#9efefe";
-                            setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+                            subparagraphURL.contentEditable = false;
+                            editDoneBtn.style.display = 'none'
 
-                            subparagraph.style.borderRadius = "20px";
-                            subparagraph.style.padding = "0px";
+                            subparagraphURL.style.backgroundColor = "#9efefe";
+                            setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                            subparagraphURL.style.borderRadius = "20px";
+                            subparagraphURL.style.padding = "0px";
+                            subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
 
                             // editDoneBtn2.style.display = 'none';
                             editbtnSub.disabled = false;
-                            if (subparagraph.innerHTML === "") {
+                            if (subparagraphURL.innerHTML === "") {
                                 alert('Input Content is Empty')
                             }
-                            await axios({
+                            let childUpdate = await axios({
                                 method: 'put',
                                 url: `${api}store/child/${childEditId}`,
                                 data: {
 
                                     "permissionId": childEditId,
-                                    "permissionName": "/coupon/special-coupon",
-                                    "permissionDescription": subparagraph.innerHTML,
+                                    "permissionName": subparagraphURL.innerText,
+                                    "permissionDescription": inputParaDiv.innerText,
                                     "permissionGroup": nodeName.innerText,
                                     "permissionControl": "MENU",
                                     "icon": "sub-icon",
-                                    "permissionLevel": "Special Coupon",
-                                    "rankData": childRantData,
+                                    "permissionLevel": inputParaDiv.innerText,
+                                    "rankData": childRantData
                                 }
                             });
 
@@ -2060,9 +3148,10 @@ async function addNode() {
 
                 }
                 editbtnSub.onclick = editSubChild;
+                document.getElementById('editUrl' + k).onclick = editSubChildURL;
 
                 subInputdel.onclick = removeSub;
-                
+
                 function handleDragStart(e) {
                     this.style.opacity = "0.4";
 
@@ -2236,6 +3325,9 @@ async function addNode() {
 
                 for (let s = 0; s < manualChildLength; s++) {
                     let manualIpChildName = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.subMenuName
+                    let manualIpChildURL = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.link
+
+
                     console.log(manualIpChildName);
 
                     // let subInputValue = subInput.value;
@@ -2257,6 +3349,13 @@ async function addNode() {
                     inputTextDiv.appendChild(paraAndEditDiv);
                     paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                    let editbtnSub = document.createElement('button')
+                    paraAndEditDiv.appendChild(editbtnSub)
+                    editbtnSub.setAttribute('id', 'editsub' + k)
+                    editbtnSub.setAttribute('class', 'editsub')
+                    editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                     let inputParaDiv = document.createElement('p');
                     paraAndEditDiv.appendChild(inputParaDiv);
                     inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
@@ -2268,6 +3367,22 @@ async function addNode() {
 
 
 
+                    let urlDiv = document.createElement('div')
+                    inputTextDiv.appendChild(urlDiv)
+                    urlDiv.setAttribute('class', 'URL')
+
+                    let editUrlBtn = document.createElement('button')
+                    urlDiv.appendChild(editUrlBtn)
+                    editUrlBtn.setAttribute('class', 'editUrl')
+                    editUrlBtn.setAttribute('id', 'editUrl' + k)
+                    editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
+
+                    let urlPara = document.createElement('p')
+                    urlDiv.appendChild(urlPara)
+                    urlPara.setAttribute('class', 'URLpara')
+                    urlPara.setAttribute('id', 'URLpara' + k)
+                    urlPara.innerText = manualIpChildURL
+
                     let div3 = document.createElement('div')
                     div3.setAttribute('class', 'childEditDel')
 
@@ -2275,11 +3390,7 @@ async function addNode() {
                     subInputdel.setAttribute('id', 'ipDelBtn' + k)
                     subInputdel.setAttribute('class', 'ipDelBtn')
 
-                    let editbtnSub = document.createElement('button')
-                    editbtnSub.setAttribute('id', 'editsub' + k)
-                    editbtnSub.setAttribute('class', 'editsub')
-                    editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
-                    div3.appendChild(editbtnSub);
+
 
                     div3.appendChild(subInputdel);
                     inputTextDiv.appendChild(div3);
@@ -2298,11 +3409,14 @@ async function addNode() {
 
                     };
                     let subparagraph = document.getElementById('inputParaDiv' + k)
+                    let subparagraphURL = document.getElementById('URLpara' + k)
 
                     async function editSubChild() {
                         let childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
 
                         let childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id;
+                        let childEditURL = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.link;
+
 
                         editbtnSub.disabled = true;
 
@@ -2312,37 +3426,185 @@ async function addNode() {
                         subparagraph.style.outline = "none";
                         subparagraph.style.borderRadius = "10px";
                         subparagraph.style.padding = "1px 10px";
-                        subparagraph.innerHTML = ""
+                        subparagraph.innerHTML = subparagraph.innerText
 
+                        let editDoneBtn = document.createElement('button')
+                        paraAndEditDiv.appendChild(editDoneBtn);
+                        editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                        editDoneBtn.setAttribute('type', 'submit');
+                        editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                        editDoneBtn.addEventListener("click", async function () {
+                            subparagraph.contentEditable = false;
+                            subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                            subparagraph.style.backgroundColor = "#ebebeb";
+                            setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                            subparagraph.style.borderRadius = "20px";
+                            subparagraph.style.padding = "0px";
+
+                            editDoneBtn.style.display = 'none';
+                            editbtnSub.disabled = false;
+
+
+
+                            // console.log(paragraph.innerHTML);
+
+                            let childUpdate = await axios({
+                                method: 'put',
+                                url: `${api}store/child/${childEditId}`,
+                                data: {
+
+                                    "permissionId": childEditId,
+                                    "permissionName": "/coupon/special-coupon",
+                                    "permissionDescription": subparagraph.innerText,
+                                    "permissionGroup": nodeName.innerText,
+                                    "permissionControl": "MENU",
+                                    "icon": "sub-icon",
+                                    "permissionLevel": "Special Coupon",
+                                    "rankData": childRantData
+                                }
+                            });
+                            // console.log(parentUpdate.data);
+
+                        })
 
 
                         subparagraph.onkeydown = async function (event) {
                             if (event.key === "Enter") {
                                 subparagraph.contentEditable = false;
+                                editDoneBtn.style.display = 'none'
+
                                 subparagraph.style.backgroundColor = "#9efefe";
                                 setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
 
                                 subparagraph.style.borderRadius = "20px";
                                 subparagraph.style.padding = "0px";
+                                subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
 
                                 // editDoneBtn2.style.display = 'none';
                                 editbtnSub.disabled = false;
                                 if (subparagraph.innerHTML === "") {
                                     alert('Input Content is Empty')
                                 }
-                                await axios({
+                                let childUpdate = await axios({
                                     method: 'put',
                                     url: `${api}store/child/${childEditId}`,
                                     data: {
 
                                         "permissionId": childEditId,
-                                        "permissionName": "/coupon/special-coupon",
-                                        "permissionDescription": subparagraph.innerHTML,
+                                        "permissionName": childEditURL,
+                                        "permissionDescription": subparagraph.innerText,
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
                                         "permissionLevel": "Special Coupon",
-                                        "rankData": childRantData,
+                                        "rankData": childRantData
+                                    }
+                                });
+
+                            }
+                        }
+
+
+                    }
+                    async function editSubChildURL() {
+                        // console.log(subparagraphURL);
+                        // let childid=editbtnSub.id;
+                        let childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
+
+                        let childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id;
+                        // console.log(childEditId);
+
+
+                        editbtnSub.disabled = true;
+
+                        subparagraphURL.contentEditable = true;
+                        subparagraphURL.style.backgroundColor = "#ebebeb";
+                        subparagraphURL.style.color = "black";
+                        subparagraphURL.style.outline = "none";
+                        subparagraphURL.style.borderRadius = "10px";
+                        subparagraphURL.style.padding = "1px 10px";
+                        subparagraphURL.innerHTML = subparagraphURL.innerText
+
+                        let editDoneBtn = document.createElement('button')
+                        urlDiv.appendChild(editDoneBtn);
+                        editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                        editDoneBtn.setAttribute('type', 'submit');
+                        editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                        editDoneBtn.addEventListener("click", async function () {
+                            subparagraphURL.contentEditable = false;
+                            subparagraphURL.innerHTML = subparagraphURL.innerText;
+                            subparagraphURL.style.backgroundColor = "#ebebeb";
+                            setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                            subparagraphURL.style.borderRadius = "20px";
+                            subparagraphURL.style.padding = "0px";
+
+                            editDoneBtn.style.display = 'none';
+                            editbtnSub.disabled = false;
+
+
+
+                            // console.log(paragraph.innerHTML);
+
+                            let childUpdate = await axios({
+                                method: 'put',
+                                url: `${api}store/child/${childEditId}`,
+                                data: {
+
+                                    "permissionId": childEditId,
+                                    "permissionName": subparagraphURL.innerText,
+                                    "permissionDescription": inputParaDiv.innerText,
+                                    "permissionGroup": nodeName.innerText,
+                                    "permissionControl": "MENU",
+                                    "icon": "sub-icon",
+                                    "permissionLevel": inputParaDiv.innerText,
+                                    "rankData": childRantData
+                                }
+                            });
+                            // console.log(parentUpdate.data);
+
+                        })
+
+
+                        subparagraphURL.onkeydown = async function (event) {
+                            if (event.key === "Enter") {
+                                subparagraphURL.contentEditable = false;
+                                editDoneBtn.style.display = 'none'
+
+                                subparagraphURL.style.backgroundColor = "#9efefe";
+                                setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                                subparagraphURL.style.borderRadius = "20px";
+                                subparagraphURL.style.padding = "0px";
+                                subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
+
+                                // editDoneBtn2.style.display = 'none';
+                                editbtnSub.disabled = false;
+                                if (subparagraphURL.innerHTML === "") {
+                                    alert('Input Content is Empty')
+                                }
+                                let childUpdate = await axios({
+                                    method: 'put',
+                                    url: `${api}store/child/${childEditId}`,
+                                    data: {
+
+                                        "permissionId": childEditId,
+                                        "permissionName": subparagraphURL.innerText,
+                                        "permissionDescription": inputParaDiv.innerText,
+                                        "permissionGroup": nodeName.innerText,
+                                        "permissionControl": "MENU",
+                                        "icon": "sub-icon",
+                                        "permissionLevel": "Special Coupon",
+                                        "rankData": childRantData
                                     }
                                 });
 
@@ -2352,12 +3614,13 @@ async function addNode() {
 
                     }
                     document.getElementById('editsub' + k).onclick = editSubChild;
+                    document.getElementById('editUrl' + k).onclick = editSubChildURL;
 
                     subInputdel.onclick = removeSub;
 
                     k++
                 }
-                
+
                 function handleDragStart(e) {
                     this.style.opacity = "0.4";
 
@@ -2475,41 +3738,65 @@ async function addNode() {
                 inputTextDiv.appendChild(paraAndEditDiv);
                 paraAndEditDiv.setAttribute('class', 'paraAndEdit')
 
+
+                let editbtnSub = document.createElement('button')
+                paraAndEditDiv.appendChild(editbtnSub)
+                editbtnSub.setAttribute('id', 'editsub' + k)
+                editbtnSub.setAttribute('class', 'editsub')
+                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
+
                 let inputParaDiv = document.createElement('p');
                 paraAndEditDiv.appendChild(inputParaDiv);
                 inputParaDiv.setAttribute('class', 'inputParaDiv animate__animated animate__backInDown')
                 inputParaDiv.setAttribute('id', 'inputParaDiv' + k)
                 inputParaDiv.innerHTML = "<i class='ri-check-double-line'></i>" + subInputValue;
 
+
+
+                let urlDiv = document.createElement('div')
+                inputTextDiv.appendChild(urlDiv)
+                urlDiv.setAttribute('class', 'URL')
+
+                let editUrlBtn = document.createElement('button')
+                urlDiv.appendChild(editUrlBtn)
+                editUrlBtn.setAttribute('class', 'editUrl')
+                editUrlBtn.setAttribute('id', 'editUrl' + k)
+                editUrlBtn.innerHTML = "<i class='ri-pencil-fill'></i>"
+
+                let urlPara = document.createElement('p')
+                urlDiv.appendChild(urlPara)
+                urlPara.setAttribute('class', 'URLpara')
+                urlPara.setAttribute('id', 'URLpara' + k)
+                urlPara.innerText = 'Edit Url here'
+
                 let div3 = document.createElement('div')
+                div3.setAttribute('class', 'childEditDel')
+
 
                 let subInputdel = document.createElement('button')
                 subInputdel.setAttribute('id', 'ipDelBtn' + k)
                 subInputdel.setAttribute('class', 'ipDelBtn')
 
-                let editbtnSub = document.createElement('button')
-                editbtnSub.setAttribute('id', 'editsub' + k)
-                editbtnSub.setAttribute('class', 'editsub')
-                editbtnSub.innerHTML = "<i class='ri-pencil-fill'></i>";
-                div3.appendChild(editbtnSub);
+
 
                 div3.appendChild(subInputdel);
                 inputTextDiv.appendChild(div3);
                 subInputdel.innerHTML = "<i class='ri-delete-bin-fill'></i>";
 
                 let subparagraph = document.getElementById('inputParaDiv' + k)
+                let subparagraphURL = document.getElementById('URLpara' + k)
 
                 await axios({
                     method: 'post',
                     url: `${api}store/child`,
                     data: {
 
-                        "permissionName": "/coupon/special-coupon",
+                        "permissionName": urlPara.innerText,
                         "permissionDescription": subInputValue,
                         "permissionGroup": nodeName.innerText,
                         "permissionControl": "MENU",
                         "icon": "sub-icon",
-                        "permissionLevel": "Special Coupon",
+                        "permissionLevel": subInputValue,
                         "rankData": rankDataChild++,
                     }
                 });
@@ -2545,12 +3832,15 @@ async function addNode() {
                     // console.log(childEditLen)
                     let childEditId = 0;
                     let childRantData = 0;
+                    let childEditURL = ''
                     for (let s = 0; s < childEditLen; s++) {
                         let childEditName = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.subMenuName
 
                         if (childEditName == ChildName) {
                             childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
                             childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id
+                            childEditURL = `${firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id}`
+
 
                         }
                     }
@@ -2563,35 +3853,196 @@ async function addNode() {
                     subparagraph.style.outline = "none";
                     subparagraph.style.borderRadius = "10px";
                     subparagraph.style.padding = "1px 10px";
-                    subparagraph.innerHTML = ""
+                    subparagraph.innerHTML = subparagraph.innerText
+
+                    let editDoneBtn = document.createElement('button')
+                    paraAndEditDiv.appendChild(editDoneBtn);
+                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                    editDoneBtn.setAttribute('type', 'submit');
+                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                    editDoneBtn.addEventListener("click", async function () {
+                        subparagraph.contentEditable = false;
+                        subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+                        subparagraph.style.backgroundColor = "#ebebeb";
+                        setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
+
+                        subparagraph.style.borderRadius = "20px";
+                        subparagraph.style.padding = "0px";
+
+                        editDoneBtn.style.display = 'none';
+                        editbtnSub.disabled = false;
+
+
+
+                        // console.log(paragraph.innerHTML);
+
+                        let childUpdate = await axios({
+                            method: 'put',
+                            url: `${api}store/child/${childEditId}`,
+                            data: {
+
+                                "permissionId": childEditId,
+                                "permissionName": childEditURL,
+                                "permissionDescription": subparagraph.innerText,
+                                "permissionGroup": nodeName.innerText,
+                                "permissionControl": "MENU",
+                                "icon": "sub-icon",
+                                "permissionLevel": "Special Coupon",
+                                "rankData": childRantData
+                            }
+                        });
+                        // console.log(parentUpdate.data);
+
+                    })
+
 
                     subparagraph.onkeydown = async function (event) {
                         if (event.key === "Enter") {
                             subparagraph.contentEditable = false;
+                            editDoneBtn.style.display = 'none'
+
                             subparagraph.style.backgroundColor = "#9efefe";
                             setTimeout(function () { subparagraph.style.backgroundColor = "white"; }, 3000);
 
                             subparagraph.style.borderRadius = "20px";
                             subparagraph.style.padding = "0px";
+                            subparagraph.innerHTML = "<i class='ri-check-double-line'></i>" + subparagraph.innerText;
+
+
 
                             // editDoneBtn2.style.display = 'none';
                             editbtnSub.disabled = false;
                             if (subparagraph.innerHTML === "") {
                                 alert('Input Content is Empty')
                             }
-                            await axios({
+                            let childUpdate = await axios({
                                 method: 'put',
                                 url: `${api}store/child/${childEditId}`,
                                 data: {
 
                                     "permissionId": childEditId,
-                                    "permissionName": "/coupon/special-coupon",
-                                    "permissionDescription": subparagraph.innerHTML,
+                                    "permissionName": childEditURL,
+                                    "permissionDescription": subparagraph.innerText,
                                     "permissionGroup": nodeName.innerText,
                                     "permissionControl": "MENU",
                                     "icon": "sub-icon",
                                     "permissionLevel": "Special Coupon",
-                                    "rankData": childRantData,
+                                    "rankData": childRantData
+                                }
+                            });
+
+                        }
+                    }
+
+
+                }
+                async function editSubChildURL() {
+
+                    ChildName = subparagraph.innerText;
+                    let childEditLen = firstApiResponse.data[0].payLoad[parentIndex].menus.length;
+                    // console.log(ChildName)
+                    // console.log(childEditLen)
+                    let childEditId = 0;
+                    let childRantData = 0;
+                    for (let s = 0; s < childEditLen; s++) {
+                        let childEditName = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.subMenuName
+
+                        if (childEditName == ChildName) {
+                            childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
+                            childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id
+
+
+                        }
+                    }
+
+
+                    editbtnSub.disabled = true;
+
+                    subparagraphURL.contentEditable = true;
+                    subparagraphURL.style.backgroundColor = "#ebebeb";
+                    subparagraphURL.style.color = "black";
+                    subparagraphURL.style.outline = "none";
+                    subparagraphURL.style.borderRadius = "10px";
+                    subparagraphURL.style.padding = "1px 10px";
+                    subparagraphURL.innerHTML = subparagraphURL.innerText
+
+                    let editDoneBtn = document.createElement('button')
+                    urlDiv.appendChild(editDoneBtn);
+                    editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+                    editDoneBtn.setAttribute('type', 'submit');
+                    editDoneBtn.setAttribute('id', 'end-editing')
+
+
+                    editDoneBtn.addEventListener("click", async function () {
+                        subparagraphURL.contentEditable = false;
+                        subparagraphURL.innerHTML = subparagraphURL.innerText;
+                        subparagraphURL.style.backgroundColor = "#ebebeb";
+                        setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                        subparagraphURL.style.borderRadius = "20px";
+                        subparagraphURL.style.padding = "0px";
+
+                        editDoneBtn.style.display = 'none';
+                        editbtnSub.disabled = false;
+
+
+
+                        // console.log(paragraph.innerHTML);
+
+                        let childUpdate = await axios({
+                            method: 'put',
+                            url: `${api}store/child/${childEditId}`,
+                            data: {
+
+                                "permissionId": childEditId,
+                                "permissionName": subparagraphURL.innerText,
+                                "permissionDescription": inputParaDiv.innerText,
+                                "permissionGroup": nodeName.innerText,
+                                "permissionControl": "MENU",
+                                "icon": "sub-icon",
+                                "permissionLevel": inputParaDiv.innerText,
+                                "rankData": childRantData
+                            }
+                        });
+                        // console.log(parentUpdate.data);
+
+                    })
+
+
+                    subparagraphURL.onkeydown = async function (event) {
+                        if (event.key === "Enter") {
+                            subparagraphURL.contentEditable = false;
+                            editDoneBtn.style.display = 'none'
+
+                            subparagraphURL.style.backgroundColor = "#9efefe";
+                            setTimeout(function () { subparagraphURL.style.backgroundColor = "white"; }, 3000);
+
+                            subparagraphURL.style.borderRadius = "20px";
+                            subparagraphURL.style.padding = "0px";
+                            subparagraphURL.innerHTML = subparagraphURL.innerText;
+
+
+
+                            // editDoneBtn2.style.display = 'none';
+                            editbtnSub.disabled = false;
+                            if (subparagraphURL.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
+                            let childUpdate = await axios({
+                                method: 'put',
+                                url: `${api}store/child/${childEditId}`,
+                                data: {
+
+                                    "permissionId": childEditId,
+                                    "permissionName": subparagraphURL.innerText,
+                                    "permissionDescription": inputParaDiv.innerText,
+                                    "permissionGroup": nodeName.innerText,
+                                    "permissionControl": "MENU",
+                                    "icon": "sub-icon",
+                                    "permissionLevel": inputParaDiv.innerText,
+                                    "rankData": childRantData
                                 }
                             });
 
@@ -2601,6 +4052,7 @@ async function addNode() {
 
                 }
                 editbtnSub.onclick = editSubChild;
+                document.getElementById('editUrl' + k).onclick = editSubChildURL;
 
                 subInputdel.onclick = removeSub;
 
@@ -2709,7 +4161,7 @@ async function addNode() {
         // btn1.disabled = true;
         j++;
     }
-    function updatedValue() {
+    async function updatedValue() {
 
         let ParentValue = paragraph.innerText;
         let posOfParent = 0;
@@ -2727,6 +4179,7 @@ async function addNode() {
 
 
 
+
         editbtn.disabled = true;
 
         paragraph.contentEditable = true;
@@ -2736,16 +4189,74 @@ async function addNode() {
         paragraph.style.borderRadius = "10px";
         paragraph.style.padding = "1px 10px";
 
-        paragraph.onkeydown = function (event) {
+        let editDoneBtn = document.createElement('button')
+        div1.appendChild(editDoneBtn);
+        editDoneBtn.innerHTML = '<i class="ri-arrow-right-fill"></i>';
+        editDoneBtn.setAttribute('type', 'submit');
+        editDoneBtn.setAttribute('id', 'end-editing')
+
+
+
+        editDoneBtn.addEventListener("click", function () {
+            paragraph.contentEditable = false;
+            paragraph.style.backgroundColor = "#b6ff46";
+            setTimeout(function () { paragraph.style.backgroundColor = "white"; }, 3000);
+
+            paragraph.style.borderRadius = "20px";
+            paragraph.style.padding = "0px";
+
+            editDoneBtn.style.display = 'none';
+            editbtn.disabled = false;
+            editbtn.disabled = false;
+
+            // console.log(paragraph.innerHTML);
+
+            let parentUpdate = axios({
+                method: 'put',
+                url: `${api}store/parent/${idOfParent}`,
+                data: {
+
+                    "permissionId": idOfParent,
+                    "permissionName": "/coupon/special-coupon",
+                    "permissionDescription": paragraph.innerHTML,
+                    "permissionGroup": "Root",
+                    "permissionControl": "MENU",
+                    // "icon": "sub-icon",
+                    "permissionLevel": "Special Coupon",
+                    "rankData": rankData,
+
+                    // "permissionId": idOfParent,
+                    // "permissionName": "/coupon/special-coupon",
+                    // "permissionDescription": paragraph.innerHTML,
+                    // "permissionGroup": "Root",
+                    // "permissionControl": "MENU",
+                    // // "icon": "sub-icon",
+                    // "permissionLevel": "Special Coupon",
+                    // // "rankData": "64"
+                }
+            });
+            // console.log(parentUpdate.data);
+
+        })
+
+        paragraph.onkeydown = async function (event) {
 
             if (event.key === "Enter") {
+                editDoneBtn.style.display = 'none'
                 paragraph.contentEditable = false;
                 paragraph.style.backgroundColor = "#b6ff46";
                 setTimeout(function () { paragraph.style.backgroundColor = "white"; }, 3000);
 
                 paragraph.style.borderRadius = "20px";
                 paragraph.style.padding = "0px";
-                let parentUpdate = axios({
+
+                // editDoneBtn.style.display = 'none';
+                // editbtn.disabled = false;
+                // editbtn.disabled = false;
+
+                // console.log(paragraph.innerHTML);
+
+                let parentUpdate = await axios({
                     method: 'put',
                     url: `${api}store/parent/${idOfParent}`,
                     data: {
@@ -2757,15 +4268,57 @@ async function addNode() {
                         "permissionControl": "MENU",
                         // "icon": "sub-icon",
                         "permissionLevel": "Special Coupon",
-                        "rankData": rankData
+                        "rankData": rankData,
                     }
                 });
-                console.log(parentUpdate.data);
+                // console.log(parentUpdate.data);
 
             }
         }
 
+
+
+
+        // editbtn.disabled = true;
+
+        // paragraph.contentEditable = true;
+        // paragraph.style.backgroundColor = "#ebebeb";
+        // paragraph.style.color = "black";
+        // paragraph.style.outline = "none";
+        // paragraph.style.borderRadius = "10px";
+        // paragraph.style.padding = "1px 10px";
+
+        // paragraph.onkeydown = function (event) {
+
+        //     if (event.key === "Enter") {
+        //         paragraph.contentEditable = false;
+        //         paragraph.style.backgroundColor = "#b6ff46";
+        //         setTimeout(function () { paragraph.style.backgroundColor = "white"; }, 3000);
+
+        //         paragraph.style.borderRadius = "20px";
+        //         paragraph.style.padding = "0px";
+        //         let parentUpdate = axios({
+        //             method: 'put',
+        //             url: `${api}store/parent/${idOfParent}`,
+        //             data: {
+
+        //                 "permissionId": idOfParent,
+        //                 "permissionName": "/coupon/special-coupon",
+        //                 "permissionDescription": paragraph.innerHTML,
+        //                 "permissionGroup": "Root",
+        //                 "permissionControl": "MENU",
+        //                 // "icon": "sub-icon",
+        //                 "permissionLevel": "Special Coupon",
+        //                 "rankData": rankData
+        //             }
+        //         });
+        //         console.log(parentUpdate.data);
+
+        //     }
+        // }
+
     }
+
 
     document.getElementById('edit' + i).onclick = updatedValue;
 

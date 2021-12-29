@@ -255,7 +255,7 @@ p.inputParaDiv {
 .inputParaDiv i{
         background: greenyellow;
         border-radius: 50%;
-        margin: 0 10px;
+        margin: 0 5px;
         padding: 5px;
         color: black;
         vertical-align: middle;
@@ -331,6 +331,7 @@ button.editsub {
     background: transparent;
     border-radius: 50%;
     /* margin: 0 5px; */
+    margin-left: 10px;
 }
 button.editsub:focus {
     outline: 1px dotted;

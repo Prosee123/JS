@@ -296,6 +296,8 @@ async function initialValue() {
                                         let subparagraphURL = document.getElementById('URLpara' + k)
 
                                         async function editSubChild() {
+                                            firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
                                             // let childid=editbtnSub.id;
                                             let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
 
@@ -335,7 +337,9 @@ async function initialValue() {
                                                 editbtnSub.disabled = false;
 
 
-
+                                                if (subparagraph.innerHTML === "") {
+                                                    alert('Input Content is Empty')
+                                                }
                                                 // console.log(paragraph.innerHTML);
 
                                                 let childUpdate = await axios({
@@ -399,7 +403,9 @@ async function initialValue() {
 
                                         }
                                         async function editSubChildURL() {
-                                            console.log(subparagraphURL);
+                                            firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
+                                            // console.log(subparagraphURL);
                                             // let childid=editbtnSub.id;
                                             let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
 
@@ -437,7 +443,9 @@ async function initialValue() {
                                                 editbtnSub.disabled = false;
 
 
-
+                                                if (subparagraphURL.innerHTML === "") {
+                                                    alert('Input Content is Empty')
+                                                }
                                                 // console.log(paragraph.innerHTML);
 
                                                 let childUpdate = await axios({
@@ -473,7 +481,9 @@ async function initialValue() {
                                                     subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                                                    if (subparagraphURL.innerHTML === "") {
+                                                        alert('Input Content is Empty')
+                                                    }
                                                     // editDoneBtn2.style.display = 'none';
                                                     editbtnSub.disabled = false;
                                                     if (subparagraphURL.innerHTML === "") {
@@ -696,6 +706,8 @@ async function initialValue() {
 
 
                             async function getSubIpValue() {
+                                firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                                 let subInputValue = subInput.value;
                                 let b = document.createElement('div')
@@ -806,6 +818,8 @@ async function initialValue() {
                                     await axios.delete(`${api}store/child/${delIdOfChild}`, payload, config);
                                 };
                                 async function editSubChild() {
+                                    firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                                     ChildName = subparagraph.innerText;
                                     let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
@@ -857,7 +871,9 @@ async function initialValue() {
                                         editbtnSub.disabled = false;
 
 
-
+                                        if (subparagraph.innerHTML === "") {
+                                            alert('Input Content is Empty')
+                                        }
                                         // console.log(paragraph.innerHTML);
 
                                         let childUpdate = await axios({
@@ -920,6 +936,8 @@ async function initialValue() {
 
                                 }
                                 async function editSubChildURL() {
+                                    firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                                     ChildName = subparagraph.innerText;
                                     let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
@@ -968,7 +986,9 @@ async function initialValue() {
                                         editbtnSub.disabled = false;
 
 
-
+                                        if (subparagraphURL.innerHTML === "") {
+                                            alert('Input Content is Empty')
+                                        }
                                         // console.log(paragraph.innerHTML);
 
                                         let childUpdate = await axios({
@@ -1004,7 +1024,9 @@ async function initialValue() {
                                             subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                                            if (subparagraphURL.innerHTML === "") {
+                                                alert('Input Content is Empty')
+                                            }
                                             // editDoneBtn2.style.display = 'none';
                                             editbtnSub.disabled = false;
                                             if (subparagraphURL.innerHTML === "") {
@@ -1330,6 +1352,8 @@ async function initialValue() {
 
 
                                         async function editSubChild() {
+                                            firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
                                             // let childid=editbtnSub.id;
                                             let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
 
@@ -1368,7 +1392,9 @@ async function initialValue() {
                                                 editDoneBtn.style.display = 'none';
                                                 editbtnSub.disabled = false;
 
-
+                                                if (subparagraph.innerHTML === "") {
+                                                    alert('Input Content is Empty')
+                                                }
 
                                                 // console.log(paragraph.innerHTML);
 
@@ -1433,7 +1459,9 @@ async function initialValue() {
 
                                         }
                                         async function editSubChildURL() {
-                                            console.log(subparagraphURL);
+                                            firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
+                                            // console.log(subparagraphURL);
                                             // let childid=editbtnSub.id;
                                             let childRantData = firstApiResponse1.data[0].payLoad[x].menus[s].subMenu.rankData
 
@@ -1471,7 +1499,9 @@ async function initialValue() {
                                                 editbtnSub.disabled = false;
 
 
-
+                                                if (subparagraphURL.innerHTML === "") {
+                                                    alert('Input Content is Empty')
+                                                }
                                                 // console.log(paragraph.innerHTML);
 
                                                 let childUpdate = await axios({
@@ -1507,7 +1537,9 @@ async function initialValue() {
                                                     subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                                                    if (subparagraphURL.innerHTML === "") {
+                                                        alert('Input Content is Empty')
+                                                    }
                                                     // editDoneBtn2.style.display = 'none';
                                                     editbtnSub.disabled = false;
                                                     if (subparagraphURL.innerHTML === "") {
@@ -1638,6 +1670,8 @@ async function initialValue() {
                             }
 
                             async function getSubIpValue() {
+                                firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                                 let subInputValue = subInput.value;
                                 let b = document.createElement('div')
@@ -1748,6 +1782,8 @@ async function initialValue() {
                                 let subparagraphURL = document.getElementById('URLpara' + k)
 
                                 async function editSubChild() {
+                                    firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                                     ChildName = subparagraph.innerText;
                                     let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
@@ -1799,7 +1835,9 @@ async function initialValue() {
                                         editbtnSub.disabled = false;
 
 
-
+                                        if (subparagraph.innerHTML === "") {
+                                            alert('Input Content is Empty')
+                                        }
                                         // console.log(paragraph.innerHTML);
 
                                         let childUpdate = await axios({
@@ -1862,6 +1900,8 @@ async function initialValue() {
 
                                 }
                                 async function editSubChildURL() {
+                                    firstApiResponse1 = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                                     ChildName = subparagraph.innerText;
                                     let childEditLen = firstApiResponse1.data[0].payLoad[x].menus.length;
@@ -1910,7 +1950,9 @@ async function initialValue() {
                                         editbtnSub.disabled = false;
 
 
-
+                                        if (subparagraphURL.innerHTML === "") {
+                                            alert('Input Content is Empty')
+                                        }
                                         // console.log(paragraph.innerHTML);
 
                                         let childUpdate = await axios({
@@ -1946,7 +1988,9 @@ async function initialValue() {
                                             subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                                            if (subparagraphURL.innerHTML === "") {
+                                                alert('Input Content is Empty')
+                                            }
                                             // editDoneBtn2.style.display = 'none';
                                             editbtnSub.disabled = false;
                                             if (subparagraphURL.innerHTML === "") {
@@ -2096,6 +2140,7 @@ async function initialValue() {
                         // if (paragraph.innerHTML == value) {
                         let idOfParent = firstApiResponse.data[0].payLoad[x].id;
                         let parentRankData = (firstApiResponse.data[0].payLoad[x].rankData);
+                        let parentURL = firstApiResponse.data[0].payLoad[x].link
 
                         console.log(idOfParent);
 
@@ -2134,7 +2179,7 @@ async function initialValue() {
                                 data: {
 
                                     "permissionId": idOfParent,
-                                    "permissionName": "/coupon/special-coupon",
+                                    "permissionName": parentURL,
                                     "permissionDescription": paragraph.innerHTML,
                                     "permissionGroup": "Root",
                                     "permissionControl": "MENU",
@@ -2142,14 +2187,7 @@ async function initialValue() {
                                     "permissionLevel": "Special Coupon",
                                     "rankData": parentRankData,
 
-                                    // "permissionId": idOfParent,
-                                    // "permissionName": "/coupon/special-coupon",
-                                    // "permissionDescription": paragraph.innerHTML,
-                                    // "permissionGroup": "Root",
-                                    // "permissionControl": "MENU",
-                                    // // "icon": "sub-icon",
-                                    // "permissionLevel": "Special Coupon",
-                                    // // "rankData": "64"
+
                                 }
                             });
                             // console.log(parentUpdate.data);
@@ -2179,7 +2217,7 @@ async function initialValue() {
                                     data: {
 
                                         "permissionId": idOfParent,
-                                        "permissionName": "/coupon/special-coupon",
+                                        "permissionName": parentURL,
                                         "permissionDescription": paragraph.innerHTML,
                                         "permissionGroup": "Root",
                                         "permissionControl": "MENU",
@@ -2498,6 +2536,9 @@ async function addNode() {
                     let subparagraphURL = document.getElementById('URLpara' + k)
 
                     async function editSubChild() {
+                        firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
+
+                        console.log(firstApiResponse);
 
                         let childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
 
@@ -2535,7 +2576,9 @@ async function addNode() {
                             editbtnSub.disabled = false;
 
 
-
+                            if (subparagraph.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
                             // console.log(paragraph.innerHTML);
 
                             let childUpdate = await axios({
@@ -2599,6 +2642,9 @@ async function addNode() {
 
                     }
                     async function editSubChildURL() {
+                        firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
+
+
                         // console.log(subparagraphURL);
                         // let childid=editbtnSub.id;
                         let childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
@@ -2637,7 +2683,9 @@ async function addNode() {
                             editbtnSub.disabled = false;
 
 
-
+                            if (subparagraphURL.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
                             // console.log(paragraph.innerHTML);
 
                             let childUpdate = await axios({
@@ -2673,7 +2721,9 @@ async function addNode() {
                                 subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                                if (subparagraphURL.innerHTML === "") {
+                                    alert('Input Content is Empty')
+                                }
                                 // editDoneBtn2.style.display = 'none';
                                 editbtnSub.disabled = false;
                                 if (subparagraphURL.innerHTML === "") {
@@ -2804,6 +2854,7 @@ async function addNode() {
 
             }
             async function getSubIpValue() {
+                firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
 
 
 
@@ -2866,7 +2917,7 @@ async function addNode() {
 
 
 
-                div3.appendChild(editbtnSub);
+                // div3.appendChild(editbtnSub);
 
                 div3.appendChild(subInputdel);
                 inputTextDiv.appendChild(div3);
@@ -2921,6 +2972,11 @@ async function addNode() {
                 };
 
                 async function editSubChild() {
+                    firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
+
+
+                    console.log(firstApiResponse);
+
                     ChildName = subparagraph.innerText;
                     let childEditLen = firstApiResponse.data[0].payLoad[parentIndex].menus.length;
                     // console.log(ChildName)
@@ -2935,8 +2991,6 @@ async function addNode() {
                             childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
                             childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id
                             childEditURL = `${firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.link}`
-
-
 
                         }
                     }
@@ -2971,7 +3025,9 @@ async function addNode() {
                         editbtnSub.disabled = false;
 
 
-
+                        if (subparagraph.innerHTML === "") {
+                            alert('Input Content is Empty')
+                        }
                         // console.log(paragraph.innerHTML);
 
                         let childUpdate = await axios({
@@ -3035,6 +3091,8 @@ async function addNode() {
 
                 }
                 async function editSubChildURL() {
+                    firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                     ChildName = subparagraph.innerText;
                     let childEditLen = firstApiResponse.data[0].payLoad[parentIndex].menus.length;
@@ -3084,7 +3142,9 @@ async function addNode() {
                         editbtnSub.disabled = false;
 
 
-
+                        if (subparagraphURL.innerHTML === "") {
+                            alert('Input Content is Empty')
+                        }
                         // console.log(paragraph.innerHTML);
 
                         let childUpdate = await axios({
@@ -3120,7 +3180,9 @@ async function addNode() {
                             subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                            if (subparagraphURL.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
                             // editDoneBtn2.style.display = 'none';
                             editbtnSub.disabled = false;
                             if (subparagraphURL.innerHTML === "") {
@@ -3255,6 +3317,7 @@ async function addNode() {
 
             // firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
             // let parentLen = firstApiResponse.data[0].payLoad.length;
+            firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
 
 
 
@@ -3448,7 +3511,9 @@ async function addNode() {
                             editbtnSub.disabled = false;
 
 
-
+                            if (subparagraph.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
                             // console.log(paragraph.innerHTML);
 
                             let childUpdate = await axios({
@@ -3457,7 +3522,7 @@ async function addNode() {
                                 data: {
 
                                     "permissionId": childEditId,
-                                    "permissionName": "/coupon/special-coupon",
+                                    "permissionName": childEditURL,
                                     "permissionDescription": subparagraph.innerText,
                                     "permissionGroup": nodeName.innerText,
                                     "permissionControl": "MENU",
@@ -3550,7 +3615,9 @@ async function addNode() {
                             editbtnSub.disabled = false;
 
 
-
+                            if (subparagraphURL.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
                             // console.log(paragraph.innerHTML);
 
                             let childUpdate = await axios({
@@ -3586,7 +3653,9 @@ async function addNode() {
                                 subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                                if (subparagraphURL.innerHTML === "") {
+                                    alert('Input Content is Empty')
+                                }
                                 // editDoneBtn2.style.display = 'none';
                                 editbtnSub.disabled = false;
                                 if (subparagraphURL.innerHTML === "") {
@@ -3718,6 +3787,8 @@ async function addNode() {
 
             async function getSubIpValue() {
 
+                firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                 let subInputValue = subInput.value;
                 let b = document.createElement('div')
@@ -3826,8 +3897,11 @@ async function addNode() {
 
                 async function editSubChild() {
 
+                    firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
+
+
                     ChildName = subparagraph.innerText;
-                    let childEditLen = firstApiResponse.data[0].payLoad[x].menus.length;
+                    let childEditLen = firstApiResponse.data[0].payLoad[parentIndex].menus.length;
                     // console.log(ChildName)
                     // console.log(childEditLen)
                     let childEditId = 0;
@@ -3840,8 +3914,6 @@ async function addNode() {
                             childRantData = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.rankData
                             childEditId = firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id
                             childEditURL = `${firstApiResponse.data[0].payLoad[parentIndex].menus[s].subMenu.id}`
-
-
                         }
                     }
 
@@ -3875,7 +3947,9 @@ async function addNode() {
                         editbtnSub.disabled = false;
 
 
-
+                        if (subparagraph.innerHTML === "") {
+                            alert('Input Content is Empty')
+                        }
                         // console.log(paragraph.innerHTML);
 
                         let childUpdate = await axios({
@@ -3939,6 +4013,8 @@ async function addNode() {
 
                 }
                 async function editSubChildURL() {
+                    firstApiResponse = await axios.get(`${api}store/getParentChild`, payload, config);
+
 
                     ChildName = subparagraph.innerText;
                     let childEditLen = firstApiResponse.data[0].payLoad[parentIndex].menus.length;
@@ -3988,7 +4064,9 @@ async function addNode() {
                         editbtnSub.disabled = false;
 
 
-
+                        if (subparagraphURL.innerHTML === "") {
+                            alert('Input Content is Empty')
+                        }
                         // console.log(paragraph.innerHTML);
 
                         let childUpdate = await axios({
@@ -4024,7 +4102,9 @@ async function addNode() {
                             subparagraphURL.innerHTML = subparagraphURL.innerText;
 
 
-
+                            if (subparagraphURL.innerHTML === "") {
+                                alert('Input Content is Empty')
+                            }
                             // editDoneBtn2.style.display = 'none';
                             editbtnSub.disabled = false;
                             if (subparagraphURL.innerHTML === "") {
@@ -4174,6 +4254,8 @@ async function addNode() {
 
         let idOfParent = firstApiResponse.data[0].payLoad[posOfParent].id;
         let rankData = firstApiResponse.data[0].payLoad[posOfParent].rankData;
+        let parentURL = firstApiResponse.data[0].payLoad[x].link
+
 
         console.log(idOfParent);
 
@@ -4217,7 +4299,7 @@ async function addNode() {
                 data: {
 
                     "permissionId": idOfParent,
-                    "permissionName": "/coupon/special-coupon",
+                    "permissionName": parentURL,
                     "permissionDescription": paragraph.innerHTML,
                     "permissionGroup": "Root",
                     "permissionControl": "MENU",
@@ -4225,14 +4307,7 @@ async function addNode() {
                     "permissionLevel": "Special Coupon",
                     "rankData": rankData,
 
-                    // "permissionId": idOfParent,
-                    // "permissionName": "/coupon/special-coupon",
-                    // "permissionDescription": paragraph.innerHTML,
-                    // "permissionGroup": "Root",
-                    // "permissionControl": "MENU",
-                    // // "icon": "sub-icon",
-                    // "permissionLevel": "Special Coupon",
-                    // // "rankData": "64"
+
                 }
             });
             // console.log(parentUpdate.data);
@@ -4262,7 +4337,7 @@ async function addNode() {
                     data: {
 
                         "permissionId": idOfParent,
-                        "permissionName": "/coupon/special-coupon",
+                        "permissionName": parentURL,
                         "permissionDescription": paragraph.innerHTML,
                         "permissionGroup": "Root",
                         "permissionControl": "MENU",

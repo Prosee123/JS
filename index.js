@@ -6,7 +6,7 @@ let k = 0;
 let rankDataChild = 1;
 let rankDataParent = 1;
 let firstApiResponse = null;
-const api = 'http://10.1.6.87:9000/api/';
+const api = 'http://10.1.30.192:9000/api/';
 // var delApi = 'http://localhost:8080/api/store/'
 
 

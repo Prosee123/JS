@@ -353,7 +353,7 @@ async function initialValue() {
                                                         "permissionGroup": nodeName.innerText,
                                                         "permissionControl": "MENU",
                                                         "icon": "sub-icon",
-                                                        "permissionLevel": "Special Coupon",
+                                                        "permissionLevel": subparagraph.innerText,
                                                         "rankData": childRantData
                                                     }
                                                 });
@@ -392,7 +392,7 @@ async function initialValue() {
                                                             "permissionGroup": nodeName.innerText,
                                                             "permissionControl": "MENU",
                                                             "icon": "sub-icon",
-                                                            "permissionLevel": "Special Coupon",
+                                                            "permissionLevel": subparagraph.innerText,
                                                             "rankData": childRantData
                                                         }
                                                     });
@@ -459,7 +459,7 @@ async function initialValue() {
                                                         "permissionGroup": nodeName.innerText,
                                                         "permissionControl": "MENU",
                                                         "icon": "sub-icon",
-                                                        "permissionLevel": "Special Coupon",
+                                                        "permissionLevel":inputParaDiv.innerText,
                                                         "rankData": childRantData
                                                     }
                                                 });
@@ -500,7 +500,7 @@ async function initialValue() {
                                                             "permissionGroup": nodeName.innerText,
                                                             "permissionControl": "MENU",
                                                             "icon": "sub-icon",
-                                                            "permissionLevel": "Special Coupon",
+                                                            "permissionLevel": inputParaDiv.innerText,
                                                             "rankData": childRantData
                                                         }
                                                     });
@@ -887,7 +887,7 @@ async function initialValue() {
                                                 "permissionGroup": nodeName.innerText,
                                                 "permissionControl": "MENU",
                                                 "icon": "sub-icon",
-                                                "permissionLevel": "Special Coupon",
+                                                "permissionLevel":subparagraph.innerText,
                                                 "rankData": childRantData
                                             }
                                         });
@@ -926,7 +926,7 @@ async function initialValue() {
                                                     "permissionGroup": nodeName.innerText,
                                                     "permissionControl": "MENU",
                                                     "icon": "sub-icon",
-                                                    "permissionLevel": "Special Coupon",
+                                                    "permissionLevel": subparagraph.innerText,
                                                     "rankData": childRantData
                                                 }
                                             });
@@ -1409,7 +1409,7 @@ async function initialValue() {
                                                         "permissionGroup": nodeName.innerText,
                                                         "permissionControl": "MENU",
                                                         "icon": "sub-icon",
-                                                        "permissionLevel": "Special Coupon",
+                                                        "permissionLevel": subparagraph.innerText,
                                                         "rankData": childRantData
                                                     }
                                                 });
@@ -1448,7 +1448,7 @@ async function initialValue() {
                                                             "permissionGroup": nodeName.innerText,
                                                             "permissionControl": "MENU",
                                                             "icon": "sub-icon",
-                                                            "permissionLevel": "Special Coupon",
+                                                            "permissionLevel": subparagraph.innerText,
                                                             "rankData": childRantData
                                                         }
                                                     });
@@ -1515,7 +1515,7 @@ async function initialValue() {
                                                         "permissionGroup": nodeName.innerText,
                                                         "permissionControl": "MENU",
                                                         "icon": "sub-icon",
-                                                        "permissionLevel": "Special Coupon",
+                                                        "permissionLevel":inputParaDiv.innerText,
                                                         "rankData": childRantData
                                                     }
                                                 });
@@ -1556,7 +1556,7 @@ async function initialValue() {
                                                             "permissionGroup": nodeName.innerText,
                                                             "permissionControl": "MENU",
                                                             "icon": "sub-icon",
-                                                            "permissionLevel": "Special Coupon",
+                                                            "permissionLevel": inputParaDiv.innerText,
                                                             "rankData": childRantData
                                                         }
                                                     });
@@ -1851,7 +1851,7 @@ async function initialValue() {
                                                 "permissionGroup": nodeName.innerText,
                                                 "permissionControl": "MENU",
                                                 "icon": "sub-icon",
-                                                "permissionLevel": "Special Coupon",
+                                                "permissionLevel":subparagraph.innerText,
                                                 "rankData": childRantData
                                             }
                                         });
@@ -1890,7 +1890,7 @@ async function initialValue() {
                                                     "permissionGroup": nodeName.innerText,
                                                     "permissionControl": "MENU",
                                                     "icon": "sub-icon",
-                                                    "permissionLevel": "Special Coupon",
+                                                    "permissionLevel": subparagraph.innerText,
                                                     "rankData": childRantData
                                                 }
                                             });
@@ -1966,7 +1966,7 @@ async function initialValue() {
                                                 "permissionGroup": nodeName.innerText,
                                                 "permissionControl": "MENU",
                                                 "icon": "sub-icon",
-                                                "permissionLevel": "Special Coupon",
+                                                "permissionLevel": inputParaDiv.innerText,
                                                 "rankData": childRantData
                                             }
                                         });
@@ -2007,7 +2007,7 @@ async function initialValue() {
                                                     "permissionGroup": nodeName.innerText,
                                                     "permissionControl": "MENU",
                                                     "icon": "sub-icon",
-                                                    "permissionLevel": "Special Coupon",
+                                                    "permissionLevel":inputParaDiv.innerText,
                                                     "rankData": childRantData
                                                 }
                                             });
@@ -2184,7 +2184,7 @@ async function initialValue() {
                                     "permissionGroup": "Root",
                                     "permissionControl": "MENU",
                                     // "icon": "sub-icon",
-                                    "permissionLevel": "Special Coupon",
+                                    "permissionLevel": paragraph.innerHTML,
                                     "rankData": parentRankData,
 
 
@@ -2222,7 +2222,7 @@ async function initialValue() {
                                         "permissionGroup": "Root",
                                         "permissionControl": "MENU",
                                         // "icon": "sub-icon",
-                                        "permissionLevel": "Special Coupon",
+                                        "permissionLevel": paragraph.innerHTML,
                                         "rankData": parentRankData,
                                     }
                                 });
@@ -2592,7 +2592,7 @@ async function addNode() {
                                     "permissionGroup": nodeName.innerText,
                                     "permissionControl": "MENU",
                                     "icon": "sub-icon",
-                                    "permissionLevel": "Special Coupon",
+                                    "permissionLevel":  subparagraph.innerText,
                                     "rankData": childRantData
                                 }
                             });
@@ -2631,7 +2631,7 @@ async function addNode() {
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
-                                        "permissionLevel": "Special Coupon",
+                                        "permissionLevel": subparagraph.innerText,
                                         "rankData": childRantData
                                     }
                                 });
@@ -2740,7 +2740,7 @@ async function addNode() {
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
-                                        "permissionLevel": "Special Coupon",
+                                        "permissionLevel": inputParaDiv.innerText,
                                         "rankData": childRantData
                                     }
                                 });
@@ -3041,7 +3041,7 @@ async function addNode() {
                                 "permissionGroup": nodeName.innerText,
                                 "permissionControl": "MENU",
                                 "icon": "sub-icon",
-                                "permissionLevel": "Special Coupon",
+                                "permissionLevel": subparagraph.innerText,
                                 "rankData": childRantData
                             }
                         });
@@ -3080,7 +3080,7 @@ async function addNode() {
                                     "permissionGroup": nodeName.innerText,
                                     "permissionControl": "MENU",
                                     "icon": "sub-icon",
-                                    "permissionLevel": "Special Coupon",
+                                    "permissionLevel": subparagraph.innerText,
                                     "rankData": childRantData
                                 }
                             });
@@ -3527,7 +3527,7 @@ async function addNode() {
                                     "permissionGroup": nodeName.innerText,
                                     "permissionControl": "MENU",
                                     "icon": "sub-icon",
-                                    "permissionLevel": "Special Coupon",
+                                    "permissionLevel":subparagraph.innerText,
                                     "rankData": childRantData
                                 }
                             });
@@ -3566,7 +3566,7 @@ async function addNode() {
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
-                                        "permissionLevel": "Special Coupon",
+                                        "permissionLevel":subparagraph.innerText,
                                         "rankData": childRantData
                                     }
                                 });
@@ -3672,7 +3672,7 @@ async function addNode() {
                                         "permissionGroup": nodeName.innerText,
                                         "permissionControl": "MENU",
                                         "icon": "sub-icon",
-                                        "permissionLevel": "Special Coupon",
+                                        "permissionLevel": inputParaDiv.innerText,
                                         "rankData": childRantData
                                     }
                                 });
@@ -3963,7 +3963,7 @@ async function addNode() {
                                 "permissionGroup": nodeName.innerText,
                                 "permissionControl": "MENU",
                                 "icon": "sub-icon",
-                                "permissionLevel": "Special Coupon",
+                                "permissionLevel":  subparagraph.innerText,
                                 "rankData": childRantData
                             }
                         });
@@ -4002,7 +4002,7 @@ async function addNode() {
                                     "permissionGroup": nodeName.innerText,
                                     "permissionControl": "MENU",
                                     "icon": "sub-icon",
-                                    "permissionLevel": "Special Coupon",
+                                    "permissionLevel":  subparagraph.innerText,
                                     "rankData": childRantData
                                 }
                             });
@@ -4304,7 +4304,7 @@ async function addNode() {
                     "permissionGroup": "Root",
                     "permissionControl": "MENU",
                     // "icon": "sub-icon",
-                    "permissionLevel": "Special Coupon",
+                    "permissionLevel": paragraph.innerHTML,
                     "rankData": rankData,
 
 
@@ -4342,7 +4342,7 @@ async function addNode() {
                         "permissionGroup": "Root",
                         "permissionControl": "MENU",
                         // "icon": "sub-icon",
-                        "permissionLevel": "Special Coupon",
+                        "permissionLevel": paragraph.innerHTML,
                         "rankData": rankData,
                     }
                 });
